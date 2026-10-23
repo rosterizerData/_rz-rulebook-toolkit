@@ -1,0 +1,6605 @@
+{
+  "name": "cyberHits",
+  "revision": "0.4.2",
+  "game": "cyberHits",
+  "genre": "sci-fi",
+  "publisher": "",
+  "url": "https://raw.githubusercontent.com/RosterizerTestData/rz-rulebook-toolkit/main/examples/cyberHits/cyberhits.rulebook",
+  "notes": "Reskinned example rulebook for the rz-rulebook-toolkit. Mechanics derived from a real game; names and prose are fictional. Not for public use.",
+  "wip": false,
+  "rulebook": {
+    "assetTaxonomy": {
+      "Cargo": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        }
+      },
+      "Damage": {
+        "aspects": {
+          "Unique": true
+        },
+        "stats": {
+          "Dents": {
+            "dynamic": false,
+            "statType": "numeric",
+            "tracked": true,
+            "value": 0,
+            "visibility": "hidden"
+          }
+        }
+      },
+      "Injuries": {
+        "allowed": {
+          "classifications": [
+            "Injury",
+            "Damage"
+          ]
+        },
+        "aspects": {
+          "Group Includes": true
+        }
+      },
+      "Injury": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "stats": {
+          "Dents": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 0,
+            "visibility": "hidden"
+          }
+        }
+      },
+      "Perk": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "stats": {
+          "Cost": {
+            "dynamic": false,
+            "group": "Cost",
+            "groupOrder": -1,
+            "icons": [
+              "jerrycan"
+            ],
+            "statType": "numeric",
+            "tracked": true,
+            "value": null,
+            "visibility": "always"
+          }
+        }
+      },
+      "Special Rule": {},
+      "Sponsor Perk": {
+        "aspects": {
+          "Type": "conceptual",
+          "Visibility": "active"
+        },
+        "templateClass": "Perk"
+      },
+      "Upgrade": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "stats": {
+          "Loadout Slots": {
+            "tracked": true
+          },
+          "Cost": {
+            "group": "Cost",
+            "groupOrder": -1,
+            "icons": [
+              "jerrycan"
+            ],
+            "statType": "numeric",
+            "tracked": true
+          }
+        }
+      },
+      "Vehicle": {
+        "allowed": {
+          "classifications": [
+            "Upgrade",
+            "Weapon—Crew Fired",
+            "Weapon—Dropped",
+            "Weapon—Mounted",
+            "Perk"
+          ]
+        },
+        "aspects": {
+          "Describe": true,
+          "Group Includes": true,
+          "Rename": true,
+          "Type": "game piece"
+        },
+        "assets": {
+          "traits": [
+            "Weapon—Crew Fired§Sidearm"
+          ]
+        },
+        "constraints": {
+          "any": [
+            "Advanced",
+            "Basic"
+          ],
+          "none": []
+        },
+        "keywords": {
+          "Weight": []
+        },
+        "lineage": [
+          "Vehicle"
+        ],
+        "meta": {
+          "ttsDamageStat": "Hull"
+        },
+        "rules": {
+          "beverly": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Built"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Horror"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Tachyon, the Phantom of the Strip"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "crewMin1": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Crew",
+                    "value"
+                  ]
+                ],
+                "value": 1
+              }
+            ],
+            "evals": [
+              {
+                "max": 0,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Crew",
+                    "processed",
+                    "numeric",
+                    "current"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          },
+          "crewQuarters": {
+            "actions": [
+              {
+                "actionType": "modify",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "item",
+                    "Upgrade§Extra Operator",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ],
+                "value": [
+                  "{this}",
+                  "evals",
+                  "1",
+                  "result",
+                  "integer"
+                ]
+              }
+            ],
+            "evals": [
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "Crew Quarters"
+                  ]
+                ]
+              },
+              {
+                "actionable": false,
+                "equation": {
+                  "operator": "T*O",
+                  "value": -0.5
+                },
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "item",
+                    "Upgrade§Extra Operator",
+                    "stats",
+                    "Cost",
+                    "processed",
+                    "numeric",
+                    "default"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 15
+          },
+          "dentsMin0": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Crew",
+                    "value"
+                  ]
+                ],
+                "value": 0
+              }
+            ],
+            "evals": [
+              {
+                "max": 0,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Crew",
+                    "processed",
+                    "numeric",
+                    "current"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          },
+          "heavyTrailer": {
+            "actions": [
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "allowed",
+                    "items"
+                  ]
+                ],
+                "value": "Upgrade—Restricted§Trailer (heavy)"
+              }
+            ],
+            "evals": [
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    "Middle"
+                  ]
+                ]
+              },
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    "Light"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          },
+          "highwayPatrol": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Speed"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Pursuit"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Tac-Response Division"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Tac-Response Division"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "halcyon": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Precision"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Speed"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Tachyon, the Phantom of the Strip"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "inferno": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Horror"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Speed"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "The Plasma Concord"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "maxxine": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Tuning"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Pursuit"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Maxx Cyberworks"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "mediumTrailer": {
+            "actions": [
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "allowed",
+                    "items"
+                  ]
+                ],
+                "value": "Upgrade—Restricted§Trailer (middle)"
+              }
+            ],
+            "evals": [
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    "Light"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          },
+          "krall": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Corporate Defense Forces"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Technology"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Krall Industrial"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "traits",
+                    "item",
+                    "Special Rule§Articulated",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Krall Industrial"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Krall Industrial"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "mizayaki": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Daring"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Precision"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Miyaza Synth-Tech"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "n₂oAddict": {
+            "actions": [
+              {
+                "actionType": "modify",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "item",
+                    "Upgrade§NOS Booster",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ],
+                "value": [
+                  "{this}",
+                  "evals",
+                  "1",
+                  "result",
+                  "integer"
+                ]
+              }
+            ],
+            "evals": [
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "NOS Addict"
+                  ]
+                ]
+              },
+              {
+                "actionable": false,
+                "equation": {
+                  "operator": "T*O",
+                  "value": -0.5
+                },
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "item",
+                    "Upgrade§NOS Booster",
+                    "stats",
+                    "Cost",
+                    "processed",
+                    "numeric",
+                    "default"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 15
+          },
+          "noSponsor": {
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "-"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 1
+          },
+          "Only one trailer is allowed per vehicle": {
+            "evals": [
+              {
+                "min": 2,
+                "not": true,
+                "operator": "SUM",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    "Light Trailer"
+                  ],
+                  [
+                    "{self}",
+                    "tally",
+                    "Middle Trailer"
+                  ],
+                  [
+                    "{self}",
+                    "tally",
+                    "Heavy Trailer"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          },
+          "coyoteCartel": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Reckless"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Built"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Coyote Cartel"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Coyote Cartel"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "coyoteTrailers": {
+            "evals": [
+              {
+                "actionable": false,
+                "contains": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "keywords",
+                    "Weight"
+                  ]
+                ],
+                "value": "Middle"
+              },
+              {
+                "actionable": false,
+                "contains": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "keywords",
+                    "Weight"
+                  ]
+                ],
+                "value": "Heavy"
+              },
+              {
+                "actionable": false,
+                "min": 1,
+                "not": false,
+                "operator": "SUM",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    [
+                      "Heavy Trailer",
+                      "Light Trailer",
+                      "Middle Trailer"
+                    ]
+                  ]
+                ]
+              },
+              {
+                "min": 2,
+                "not": false,
+                "operator": "SUM",
+                "paths": [
+                  [
+                    "{this}",
+                    "evals",
+                    [
+                      "0",
+                      "1",
+                      "2"
+                    ],
+                    "result",
+                    "truthy"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 20
+          },
+          "rutherford": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Hardened"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Corporate Defense Forces"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Vex Logistics"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Vex Logistics"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "scarlett": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Tuning"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Aggression"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Crimson Black-Ice"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "slime": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Tuning"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Reckless"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "BIOS-LIME"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "Teams sponsored by Miyaza may not purchase vehicle types with a base Handling value of 2 or lower": {
+            "evals": [
+              {
+                "actionable": true,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Miyaza Synth-Tech"
+              },
+              {
+                "actionable": true,
+                "min": 3,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Handling",
+                    "processed",
+                    "numeric",
+                    "default"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          },
+          "theWarden": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Aggression"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Hardened"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Castellum Holdings"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Castellum Holdings"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          },
+          "This vehicle may only take one Cargo": {
+            "evals": [
+              {
+                "min": 2,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    "Cargo"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          },
+          "pellucid": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Built"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Technology"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Pellucid Black-Ops"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "Pellucid Black-Ops"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 2
+          }
+        },
+        "stats": {
+          "Loadout Slots": {
+            "statOrder": 6,
+            "statType": "numeric"
+          },
+          "Cost": {
+            "dynamic": false,
+            "group": "Cost",
+            "groupOrder": -1,
+            "icons": [
+              "jerrycan"
+            ],
+            "statType": "numeric",
+            "tracked": true,
+            "value": null,
+            "visibility": "always"
+          },
+          "Crew": {
+            "statOrder": 5,
+            "statType": "numeric",
+            "tracked": true
+          },
+          "Dents": {
+            "dynamic": false,
+            "min": 0,
+            "statOrder": 7,
+            "statType": "numeric",
+            "tracked": true,
+            "value": 0,
+            "visibility": "normal"
+          },
+          "Handling": {
+            "statOrder": 3,
+            "statType": "numeric",
+            "tracked": true
+          },
+          "Hull": {
+            "statOrder": 2,
+            "statType": "numeric",
+            "tracked": true
+          },
+          "Max Gear": {
+            "statOrder": 4,
+            "statType": "numeric",
+            "tracked": true
+          }
+        }
+      },
+      "Weapon": {
+        "assets": {
+          "traits": []
+        },
+        "rules": {
+          "wellStocked": {
+            "actions": [
+              {
+                "actionType": "modify",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Ammo",
+                    "value"
+                  ]
+                ],
+                "value": 1
+              }
+            ],
+            "evals": [
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "Well Stocked"
+                  ]
+                ]
+              },
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Ammo",
+                    "processed",
+                    "numeric",
+                    "default"
+                  ]
+                ],
+                "value": 3
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "stats": {
+          "Ammo": {
+            "statType": "numeric"
+          },
+          "Attack Dice": {
+            "format": "{v}d6",
+            "icons": [
+              "perspective-dice-six"
+            ],
+            "label": "Attack Dice",
+            "statOrder": 2,
+            "statType": "numeric",
+            "value": null
+          },
+          "Loadout Slots": {
+            "statType": "numeric",
+            "tracked": true
+          },
+          "Cost": {
+            "group": "Cost",
+            "groupOrder": -1,
+            "icons": [
+              "jerrycan"
+            ],
+            "statType": "numeric",
+            "tracked": true
+          },
+          "Range": {
+            "label": "Range",
+            "ranks": {
+              "Short": {
+                "hotkey": "s",
+                "order": 0
+              },
+              "Medium": {
+                "hotkey": "m",
+                "order": 1
+              },
+              "Long": {
+                "hotkey": "l",
+                "order": 2
+              },
+              "Double": {
+                "hotkey": "d",
+                "order": 3
+              },
+              "Tight Burst": {
+                "hotkey": "b",
+                "order": 4
+              },
+              "Large Burst": {
+                "hotkey": "u",
+                "order": 5
+              },
+              "Double/Dropped": {
+                "hotkey": "o",
+                "order": 6
+              }
+            },
+            "statOrder": 1,
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired": {
+        "templateClass": "Weapon"
+      },
+      "Weapon—Dropped": {
+        "stats": {
+          "Loadout Slots": {
+            "tracked": true
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "templateClass": "Weapon"
+      },
+      "Weapon—Mounted": {
+        "rules": {
+          "Choose mounting direction": {
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "Back"
+              },
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "Front"
+              },
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "Left"
+              },
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "Right"
+              },
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "360°"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "warning"
+          },
+          "turretMounting": {
+            "actions": [
+              {
+                "actionType": "modify",
+                "iterations": 2,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ],
+                "value": [
+                  "{self}",
+                  "stats",
+                  "Cost",
+                  "processed",
+                  "numeric",
+                  "default"
+                ]
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "360°"
+              },
+              {
+                "actionable": true,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "designation"
+                  ]
+                ],
+                "value": "Turret"
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "pass",
+            "order": 25
+          },
+          "wellStocked": {
+            "actions": [
+              {
+                "actionType": "modify",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Ammo",
+                    "value"
+                  ]
+                ],
+                "value": 1
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "Well Stocked"
+                  ]
+                ]
+              },
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Ammo",
+                    "processed",
+                    "numeric",
+                    "default"
+                  ]
+                ],
+                "value": 3
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "stats": {
+          "Mounting": {
+            "dynamic": true,
+            "ranks": {
+              "-": {
+                "order": 0
+              },
+              "Front": {
+                "hotkey": "f",
+                "order": 1
+              },
+              "Back": {
+                "hotkey": "b",
+                "order": 2
+              },
+              "Left": {
+                "hotkey": "l",
+                "order": 3
+              },
+              "Right": {
+                "hotkey": "r",
+                "order": 4
+              },
+              "360°": {
+                "hotkey": "3",
+                "order": 5
+              }
+            },
+            "statOrder": 0,
+            "statType": "rank",
+            "tracked": false,
+            "value": "-",
+            "visibility": "normal"
+          }
+        },
+        "templateClass": "Weapon"
+      }
+    },
+    "assetCatalog": {
+      "Cargo§Quick-Patch Kit": {
+        "text": "This vehicle may consider its current gear to be any value, up to this vehicle’s max gear, during the blow-out step, including during any collisions resolved during the blow-out step."
+      },
+      "Cargo§Stim-Pack": {
+        "text": "Whenever a vehicle within medium range of this vehicle gains one or more strain markers, it gains one additional strain marker."
+      },
+      "Cargo§Adrenal-Pack": {
+        "text": "This vehicle’s incendiary bottle cocktail count as having an infinite number of ammo cells."
+      },
+      "Cargo§Fuel Siphon": {
+        "text": "At the start of this vehicle’s attack step, regardless of whether it is distracted, this vehicle may take up to one strain marker from each car within short range of it and place it on this vehicle."
+      },
+      "Cargo§Coolant-Booster": {
+        "text": "At the end of this vehicle’s movement step, if this vehicle has 5 or more strain markers, it must immediately make a long straight maneuver forward."
+      },
+      "Damage§Crowd Favorite": {
+        "stats": {
+          "Contract Points": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 5,
+            "visibility": "hidden"
+          },
+          "Dents": {
+            "value": 3
+          }
+        },
+        "text": "If this vehicle is Totaled, its controller immediately discards 3 Stream Credits (to a minimum of 0)."
+      },
+      "Damage§Bent Suspension Arm": {
+        "stats": {
+          "Dents": {
+            "value": 1
+          }
+        }
+      },
+      "Damage§Blown off": {
+        "stats": {
+          "Dents": {
+            "value": 1
+          }
+        }
+      },
+      "Damage§Popped it back in!": {
+        "stats": {
+          "Dents": {
+            "value": -1
+          }
+        }
+      },
+      "Damage§Interior Ruined": {
+        "stats": {
+          "Crew": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": -1,
+            "visibility": "hidden"
+          },
+          "Dents": {
+            "value": 2
+          }
+        }
+      },
+      "Damage§Weakened chassis": {
+        "stats": {
+          "Dents": {
+            "value": 2
+          }
+        },
+        "text": "+1 Strain Marker when involved in a Collision."
+      },
+      "Damage§Totaled Drive-Axle": {
+        "stats": {
+          "Dents": {
+            "value": 1
+          }
+        }
+      },
+      "Injuries§Injuries": {
+        "allowed": {
+          "classifications": [
+            "Injury"
+          ]
+        }
+      },
+      "Injury§Bad PR": {
+        "stats": {
+          "Dents": {
+            "value": -1
+          }
+        },
+        "text": "This vehicle must pay 1 additional Stream Credit to redeploy."
+      },
+      "Injury§Hardened": {
+        "stats": {
+          "Dents": {
+            "value": -6
+          }
+        },
+        "text": "This vehicle may immediately select and gain any one Badass perk, without paying its cost, even if this driver could not normally select Badass perks."
+      },
+      "Injury§Wired": {
+        "stats": {
+          "Dents": {
+            "value": -2
+          }
+        },
+        "text": "This vehicle must always declare an evade during a collision, they may not declare a Ram Attack."
+      },
+      "Injury§Cyber-Psychotic": {
+        "stats": {
+          "Dents": {
+            "value": -2
+          }
+        },
+        "text": "This vehicle may not use throttle results to cancel out yaw or slip results."
+      },
+      "Injury§Deathwish": {
+        "stats": {
+          "Dents": {
+            "value": -1
+          }
+        },
+        "text": "This vehicle cannot choose to throttle down."
+      },
+      "Injury§Held Together By Duct Tape": {
+        "stats": {
+          "Dents": {
+            "value": -5
+          }
+        },
+        "text": "During the Post-Mission Sequence, when rolling on the Vehicle Totaled table (see page 162), apply the first result then roll again apply the second result as well."
+      },
+      "Injury§Street-Legend": {
+        "stats": {
+          "Dents": {
+            "value": -11
+          }
+        },
+        "text": "During the Post-Mission Sequence, when rolling on the Vehicle Totaled table (see page 162), count your result as 1 and remove any injury perks you wish."
+      },
+      "Injury§Combat Trauma": {
+        "stats": {
+          "Dents": {
+            "value": -3
+          }
+        },
+        "text": "At the start of every game,roll a D6. On a 1, this vehicle cannot take part in this game."
+      },
+      "Injury§The Shakes": {
+        "stats": {
+          "Dents": {
+            "value": -3
+          }
+        },
+        "text": "This vehicle blows out at 5 strain markers instead of 6"
+      },
+      "Injury§Twitch": {
+        "stats": {
+          "Dents": {
+            "value": -4
+          }
+        },
+        "text": "At the start of the game"
+      },
+      "Perk§Reaper Protocol": {
+        "keywords": {
+          "Tags": [
+            "Horror"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "Before making an attack, this vehicle may elect to suffer up to three damage to add that many attack dice to a single weapon used in this attack."
+      },
+      "Perk§Aileron Roll": {
+        "keywords": {
+          "Tags": [
+            "Built"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "When this vehicle suffers a flip, it may choose to place the flip template touching the centre of either side edge or the rear edge of this vehicle, and perpendicular to that edge, instead of touching the front edge as normal."
+      },
+      "Perk§Slug-Drive": {
+        "keywords": {
+          "Tags": [
+            "Aggression"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "When making a ram attack, this vehicle gains +1 attack dice for each strain marker it currently has."
+      },
+      "Perk§Stim-Seeker": {
+        "keywords": {
+          "Tags": [
+            "Reckless"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "When this vehicle would suffer damage outside of its activation, reduce that damage by 1, to a minimum of 1."
+      },
+      "Perk§Heavyweight Bias": {
+        "keywords": {
+          "Tags": [
+            "Reckless"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "Double any ram attack bonuses or penalties resulting from weight differences in collisions involving this vehicle."
+      },
+      "Perk§Forced Entry Crew": {
+        "keywords": {
+          "Tags": [
+            "Aggression"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "This vehicle ignores the distracted rule. Crew members in this vehicle may attack during the attack step even if the vehicle is distracted."
+      },
+      "Perk§Brutalist": {
+        "keywords": {
+          "Tags": [
+            "Built"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "In a collision involving this vehicle, if this vehicle declares a reaction other than evade against an enemy vehicle, the enemy vehicle immediately gains one strain marker."
+      },
+      "Perk§Slow-Time": {
+        "keywords": {
+          "Tags": [
+            "Hardened"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "If this vehicle resolves a slip result during its movement step, this may select one of its weapons to count as turret-mounted for the rest of the activation."
+      },
+      "Perk§Chrome-Whisperer": {
+        "keywords": {
+          "Tags": [
+            "Daring"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "This vehicle may *push it* any number of times during a single drift check, gaining 1 strain marker each time."
+      },
+      "Perk§Drop Cover": {
+        "keywords": {
+          "Tags": [
+            "Hardened"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "Once during its activation this vehicle may remove a strain marker and place it on another friendly vehicle within double range."
+      },
+      "Perk§Stream-Pleaser": {
+        "keywords": {
+          "Tags": [
+            "Hardened"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "If this vehicle blows out, gain +1 stream credit."
+      },
+      "Perk§Crusher": {
+        "keywords": {
+          "Tags": [
+            "Built"
+          ]
+        },
+        "rules": {
+          "upAndOver": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{parent}",
+                    "traits"
+                  ]
+                ],
+                "value": "Special Rule§Run-Over"
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "stats": {
+          "Cost": {
+            "value": 7
+          }
+        },
+        "text": "This vehicle gains the Up and Over special rule (see the Urban Crusher rules)."
+      },
+      "Perk§Ballast Run": {
+        "keywords": {
+          "Tags": [
+            "Built"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "During this vehicle’s attack step, this vehicle may gain 2 strain to count as one weight-class heavier (unless already heavyweight) until the start of its next activation."
+      },
+      "Perk§Smartlinked": {
+        "keywords": {
+          "Tags": [
+            "Corporate Defense Forces"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "During this vehicle’s attack step this vehicle may gain a +1 bonus to hit if making a shooting attack at a target within double range and not within medium range. \n\nCritical hits still occur only on the natural roll of a 6."
+      },
+      "Perk§Light Touch": {
+        "keywords": {
+          "Tags": [
+            "Tuning"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "This vehicle ignores the strain icons on maneuver templates."
+      },
+      "Perk§Lockdown Run": {
+        "keywords": {
+          "Tags": [
+            "Reckless"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "At the start of this vehicle’s activation, it may gain 4 strain markers. If it does, this vehicle cannot gain or lose any strain markers by any means until the start of its next activation."
+      },
+      "Perk§Twin-Trigger": {
+        "keywords": {
+          "Tags": [
+            "Aggression"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "During the attack step, up to 3 weapons with the Crew Fired special rule may gain a +1 bonus to hit."
+      },
+      "Perk§Hard Downshift": {
+        "keywords": {
+          "Tags": [
+            "Speed"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "At the end of a movement step in which this vehicle changed down one or more gears, this vehicle may immediately make a forced short straight movement forward."
+      },
+      "Perk§Aggressive Driver": {
+        "keywords": {
+          "Tags": [
+            "Reckless"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "Gain 1 strain marker at the start of each activation."
+      },
+      "Perk§Smooth Operator": {
+        "keywords": {
+          "Tags": [
+            "Precision"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Once per turn, this vehicle may discard one rolled drift die result before applying the results."
+      },
+      "Perk§Neural Spike": {
+        "keywords": {
+          "Tags": [
+            "Horror"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "Once per activation, at the start of this vehicle’s activation, this vehicle may elect to to gain up to 3 strain markers to discard one strain marker from a friendly vehicle for each strain marker gained."
+      },
+      "Perk§Cold-Boot Trick": {
+        "keywords": {
+          "Tags": [
+            "Technology"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "Once per game, at the start of its attack step, this vehicle’s controller may declare any weapon that this vehicle has not attacked with yet this game. This vehicle counts as being armed with the declared weapon, on a facing of their choice, for the next attack only."
+      },
+      "Perk§Evasive": {
+        "keywords": {
+          "Tags": [
+            "Daring"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Before making an evade roll, this vehicle may gain any number of strain markers to add +1 to each of their evade dice for each strain marker gained. A roll of a ‘1’ on an evade dice always counts as a failure."
+      },
+      "Perk§Specialist Driver": {
+        "keywords": {
+          "Tags": [
+            "Precision"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          },
+          "Handling": {
+            "statType": "numeric",
+            "tracked": true,
+            "visibility": "hidden"
+          }
+        },
+        "text": "This vehicle adds +1 to its handling value."
+      },
+      "Perk§Pain Suppressor": {
+        "keywords": {
+          "Tags": [
+            "Built"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 8
+          }
+        },
+        "text": "During an enemy vehicle’s attack step, after an attacker has rolled all of their attack dice against this vehicle, if the attacks causes a total of 2 or fewer un-canceled hits, cancel all remaining hits."
+      },
+      "Perk§Fender-Kiss": {
+        "keywords": {
+          "Tags": [
+            "Tuning"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "When this vehicle makes a ram attack, this vehicle suffers a penalty of -2 attack dice. Vehicles making a ram attack targeting this vehicle suffer a penalty of -2 attack dice."
+      },
+      "Perk§Full Mag": {
+        "keywords": {
+          "Tags": [
+            "Corporate Defense Forces"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "If a shooting weapon on this vehicle has 3 or more ammo cells remaining before discarding an ammo cell to attack, that weapon gains +1 attack dice."
+      },
+      "Perk§Grinder": {
+        "keywords": {
+          "Tags": [
+            "Aggression"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Before this Vehicle rolls its attack dice in a ram attack, it may choose to add strain markers to the target vehicle for each damage it inflicts, instead of removing hull points."
+      },
+      "Perk§Gyro-Stabilizer": {
+        "keywords": {
+          "Tags": [
+            "Technology"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "At the start of each game, this vehicle gains a random DARING PERK. This perk is lost at the end of the game."
+      },
+      "Perk§Drift Artist": {
+        "keywords": {
+          "Tags": [
+            "Daring"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "When applying a yaw result, this vehicle may choose to face any direction."
+      },
+      "Perk§Cortex Strike": {
+        "keywords": {
+          "Tags": [
+            "Corporate Defense Forces"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "When making a shooting attack, this vehicle’s critical hits inflict 3 hits instead of the normal 2 hits."
+      },
+      "Perk§Hard Rev": {
+        "keywords": {
+          "Tags": [
+            "Speed"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "This vehicle considers long straight to he permitted in any gear. The long straight is not considered either hazardous or trivial in any gear."
+      },
+      "Perk§Expressway Zealot": {
+        "keywords": {
+          "Tags": [
+            "Horror"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "At the end of its movement step, if this vehicle selected a straight template, this vehicle may suffer 2 damage. This damage counts as having the ‘Plasma-Fire’ rule. If any hull points are removed by this effect, this vehicle may leave its movement template (ignoring any slip template) in play as a Napalm dropped weapon template. Remove this template at the start of this vehicle’s next activation."
+      },
+      "Perk§Berserk Surge": {
+        "keywords": {
+          "Tags": [
+            "Reckless"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "This vehicle gains +2 ram attack dice during any collision resolved during a blow out step."
+      },
+      "Perk§Pre-Heated Start": {
+        "keywords": {
+          "Tags": [
+            "Speed"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "Roll a D6 at the start of the game This vehicle starts the game in that gear. Re-roll if this is above the vehicles max gear."
+      },
+      "Perk§All-In": {
+        "keywords": {
+          "Tags": [
+            "Reckless"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "If this vehicle has gained six or more strain markers during this activation, it may double the attack dice of any ram attack for this activation only."
+      },
+      "Perk§Loader": {
+        "keywords": {
+          "Tags": [
+            "Corporate Defense Forces"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "At the start of its attack step, this vehicle may temporarily reduce its crew value by one, once, until the end of the attack step, to gain +1 bonus to hit with a single weapon. Critical hits still occur only on the natural roll of a 6."
+      },
+      "Perk§Cyber-Madman": {
+        "keywords": {
+          "Tags": [
+            "Hardened"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "At the end of this vehicle’s Movement Step, if it has 4 or more strain markers, it may remove a strain marker and place it on another vehicle within medium range."
+      },
+      "Perk§Heat-Sink Specialist": {
+        "keywords": {
+          "Tags": [
+            "Precision"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "This vehicle cannot gain more than 2 strain tokens from collisions during a single activation."
+      },
+      "Perk§Field Tech": {
+        "keywords": {
+          "Tags": [
+            "Technology"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "Once per activation, at the start of its attack step, this vehicle may temporarily reduce its crew value by one, once, until the end of the attack step, to perform a field repair. If it does, this vehicle gains 1 hull point, which may not take its hull points above the vehicle’s hull value."
+      },
+      "Perk§Stream Highlight": {
+        "keywords": {
+          "Tags": [
+            "Precision"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "Once per game, after rolling the drift dice, but before resolving the results, this vehicle may immediately change any number of drift dice to any results they choose."
+      },
+      "Perk§Momentum": {
+        "keywords": {
+          "Tags": [
+            "Tuning"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "When resolving drift dice, this vehicle may set aside a Slip or Yaw result to re-roll a drift dice. The effect may be used multiple times.  Set aside results must be resolved."
+      },
+      "Perk§Hostile-Takeover Rig": {
+        "keywords": {
+          "Tags": [
+            "Aggression"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "This vehicle may make bulldozer ram attacks, like a Convoy Rig."
+      },
+      "Perk§Pursuit Lock": {
+        "keywords": {
+          "Tags": [
+            "Pursuit"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "When an enemy vehicle resolves a yaw or slip move that ends within short range of this vehicle, that vehicle gains +1 strain marker."
+      },
+      "Perk§Out-Throttle": {
+        "keywords": {
+          "Tags": [
+            "Pursuit"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "At the start of this vehicle’s attack step, all vehicles within short range of this vehicle and in a current, lower gear than this vehicle gain +1 strain marker."
+      },
+      "Perk§Overclock": {
+        "keywords": {
+          "Tags": [
+            "Speed"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "When making a drift check, this vehicle may roll one additional drift die. If it does, it must change up at least one gear or gain a strain marker."
+      },
+      "Perk§PIT Maneuver": {
+        "keywords": {
+          "Tags": [
+            "Pursuit"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "During this vehicle’s activation, if this vehicle is involved in a non-head-on collision with an enemy vehicle, it may declare a *Pursuit Intervention Technique* (PIT) as its reaction, targeting the enemy vehicle, instead of declaring a ram attack or an evade. If this vehicle declares a PIT, it may select any movement template the target vehicle considers hazardous in its current gear. Immediately after the resolution of this collision, the target vehicle must make a forced move directly forward using the selected movement template."
+      },
+      "Perk§Munitions Keg": {
+        "keywords": {
+          "Tags": [
+            "Hardened"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "This vehicle may add +1 to its explosion check. Treat this vehicle as one weight-class heavier when it explodes.\n\nNote: this bonus does apply during resolution of the FIREWORKS perk."
+      },
+      "Perk§Power-Drift": {
+        "keywords": {
+          "Tags": [
+            "Daring"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "This vehicle may use any template except the long straight template instead of the slip template when applying a slip result. As with the movement step 1.1, you must use the first maneuver template you touch. Treat the selected maneuver template as a slip template for purposes of finding the vehicle’s final position."
+      },
+      "Perk§Purifying Plasma": {
+        "keywords": {
+          "Tags": [
+            "Horror"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "Once per activation, at the start of this vehicle’s activation, this vehicle may suffer up to 3 damage to repair one hull point on a friendly vehicle for each hull point removed by this effect. This damage counts as having the *Plasma-Fire* rule. This effect may not be used to raise a vehicle above its hull value."
+      },
+      "Perk§Smooth Idle": {
+        "keywords": {
+          "Tags": [
+            "Tuning"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 6
+          }
+        },
+        "text": "This vehicle does not receive more than 1 strain marker from Yaw results each turn. This vehicle does not receive more than 1 strain marker from Slip results each turn. This vehicle does not receive more than 1 strain marker from Strain results each turn."
+      },
+      "Perk§Rapid Plasma-Fire": {
+        "keywords": {
+          "Tags": [
+            "Corporate Defense Forces"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "Once per round, after attacking with a weapon, this vehicle may resolve an additional attack step in which it may only attack with that weapon."
+      },
+      "Perk§Rear Pivot": {
+        "keywords": {
+          "Tags": [
+            "Tuning"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "This vehicle may pivot about the centre of its front edge, rather than the centre of the vehicle, when resolving Yaw results."
+      },
+      "Perk§Soft Throttle": {
+        "keywords": {
+          "Tags": [
+            "Precision"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "When this vehicle would gain a strain marker for shifting down a gear, this vehicle may remove a strain marker instead."
+      },
+      "Perk§Counter-Plasma-Fire": {
+        "keywords": {
+          "Tags": [
+            "Corporate Defense Forces"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Once per gear phase, if this vehicle is the target of a shooting attack, this vehicle may take 2 strain markers to immediately attack, as if it was this vehicle’s attack step."
+      },
+      "Perk§Street Warrior": {
+        "keywords": {
+          "Tags": [
+            "Hardened"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "Once per activation, if this vehicle has successfully causes one or more hits on an enemy vehicle at any point during this activation, this vehicle may remove a single strain marker at the end of its attack step."
+      },
+      "Perk§Vector Thrusters": {
+        "keywords": {
+          "Tags": [
+            "Technology"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "When this vehicle is moved as part of a flip, it may choose to use the long straight, veer or gentle templates instead of the medium straight template."
+      },
+      "Perk§Sat-Link Pilot": {
+        "keywords": {
+          "Tags": [
+            "Technology"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "When this vehicle resolves its drift dice, this vehicle’s controller may set aside one throttle result. This vehicle may have any number of throttle results set aside. Any vehicle in this squad may use these set aside throttle results during a later movement step, as if they had rolled them in that movement step."
+      },
+      "Perk§Casualty Bonus": {
+        "keywords": {
+          "Tags": [
+            "Pursuit"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "If another vehicle within short range of this vehicle resolves a blow out, (either before or after any flip), remove all strain markers from this vehicle."
+      },
+      "Perk§Side-Slip": {
+        "keywords": {
+          "Tags": [
+            "Tuning"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 6
+          }
+        },
+        "text": "If this vehicle has handling 3 or higher, this vehicle may take 3 strain markers at the end of its activation to be ignored by other vehicles during their movement steps until the start of this vehicle’s next activation. If, by ignoring this vehicle in this way, a vehicle’s final position would overlap it, move that vehicle backwards along their maneuver template by the minimum amount to avoid overlapping any obstruction."
+      },
+      "Perk§Slippery": {
+        "keywords": {
+          "Tags": [
+            "Daring"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "Vehicles making a ram attack targeting this vehicle suffer a penalty of -2 attack dice."
+      },
+      "Perk§Slipstream": {
+        "keywords": {
+          "Tags": [
+            "Speed"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "If this vehicle is involved in a tailgate collision during its activation, this vehicle may declare a slipstream reaction. If they do, they other vehicle may not declare a reaction. If this vehicle declares a slipstream reaction: this vehicle may change up or down one gear and gains a strain marker. Neither vehicle gains strain markers as a result of this collision."
+      },
+      "Perk§Backwash": {
+        "keywords": {
+          "Tags": [
+            "Built"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Once per step, when this vehicle loses one or more hull points, make a 1D6 attack against each vehicle within medium range at end of that step."
+      },
+      "Perk§Stunt Driver": {
+        "keywords": {
+          "Tags": [
+            "Daring"
+          ]
+        },
+        "rules": {
+          "This perk may only be taken on a lightweight or middleweight vehicle type with a base handling value of 3 or more.": {
+            "evals": [
+              {
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "stats",
+                    "Weight",
+                    "value"
+                  ]
+                ],
+                "value": "heavy"
+              },
+              {
+                "min": 3,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "stats",
+                    "Handling",
+                    "processed",
+                    "numeric",
+                    "default"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "error"
+          }
+        },
+        "stats": {
+          "Cost": {
+            "value": 7
+          }
+        },
+        "text": "This vehicle may choose to ignore any number of obstructions during its movement step. After any movement step in which this vehicle chooses to ignore any obstruction using this ability, this vehicle immediately gains 3 strain markers."
+      },
+      "Perk§Black Empathy": {
+        "keywords": {
+          "Tags": [
+            "Horror"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "When this vehicle makes an evade check, it’s controller may select a friendly vehicle within medium range. Add the current gear of the selected vehicle to this vehicle’s current gear for the purposes of this evade check. Both the selected vehicle and this vehicle suffer any unsaved damage from this attack, including any additional effects."
+      },
+      "Perk§Provoke": {
+        "keywords": {
+          "Tags": [
+            "Pursuit"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "At the start of this vehicle’s attack step, roll a drift die. If you roll something other than a SHIFT result, you may place that drift die result onto the dashboard of a target vehicle within short range. This drift die result must be resolved during that vehicle’s next drift check, and may not be re-rolled."
+      },
+      "Perk§Cyber-Psycho": {
+        "keywords": {
+          "Tags": [
+            "Aggression"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Whenever a vehicle controlled by another player ends its movement step within short range of this vehicle, the active vehicle gains a strain marker."
+      },
+      "Perk§Overtime!": {
+        "keywords": {
+          "Tags": [
+            "Speed"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "At the end of an activation in which this vehicle passes a gate, before checking for wipeouts, this vehicle may immediately remove any number of strain markers."
+      },
+      "Perk§Trick Driving": {
+        "keywords": {
+          "Tags": [
+            "Precision"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "This vehicle may select a movement template as if its current gear was one higher or one lower."
+      },
+      "Perk§Dead-Eye Stare": {
+        "keywords": {
+          "Tags": [
+            "Pursuit"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 5
+          }
+        },
+        "text": "Enemy vehicles within short range of this vehicle may not use throttle results to remove strain markers from their dashboard."
+      },
+      "Perk§Violent Glitch": {
+        "keywords": {
+          "Tags": [
+            "Horror"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 3
+          }
+        },
+        "text": "When this vehicle is respawned: make an immediate attack (with attack dice based on the weight of the respawned vehicle) against every other vehicle within medium range. This explosion counts as having both the *Blast* and *Plasma-Fire* rules."
+      },
+      "Perk§Whizbang": {
+        "keywords": {
+          "Tags": [
+            "Technology"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 1
+          }
+        },
+        "text": "At the start of each game, this vehicle gains a random SPEED PERK. This perk is lost at the end of the game."
+      },
+      "Roster§Roster": {
+        "allowed": {
+          "classifications": [
+            "Vehicle"
+          ]
+        },
+        "aspects": {
+          "Label": "Squad"
+        },
+        "constraints": {
+          "any": [
+            "Basic",
+            "Advanced"
+          ]
+        },
+        "rules": {
+          "campaign": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "included",
+                    "classification",
+                    [
+                      "Vehicle—Restricted",
+                      "Vehicle—Standard"
+                    ],
+                    "traits"
+                  ]
+                ],
+                "value": "Injuries§Injuries"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Game Type",
+                    "value"
+                  ]
+                ],
+                "value": "Campaign"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 5
+          },
+          "noSponsor": {
+            "actions": [
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Basic"
+              },
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Advanced"
+              },
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "classification",
+                    "Vehicle",
+                    "constraints",
+                    "none"
+                  ],
+                  [
+                    "{self}",
+                    "assets",
+                    "classification",
+                    "Vehicle",
+                    "assets",
+                    "item",
+                    "Special Rule§Turret",
+                    "constraints",
+                    "none"
+                  ],
+                  [
+                    "{self}",
+                    "assets",
+                    "classification",
+                    "Vehicle",
+                    "assets",
+                    "item",
+                    "Special Rule§Articulated",
+                    "constraints",
+                    "none"
+                  ]
+                ],
+                "value": "Krall Industrial"
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Sponsor",
+                    "value"
+                  ]
+                ],
+                "value": "-"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          },
+          "scenario": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    [
+                      "Stash",
+                      "Contract Points"
+                    ],
+                    "visibility"
+                  ],
+                  [
+                    "{self}",
+                    "assets",
+                    "classification",
+                    [
+                      "Vehicle—Standard",
+                      "Vehicle—Restricted"
+                    ],
+                    "stats",
+                    "Dents",
+                    "visibility"
+                  ]
+                ],
+                "value": "hidden"
+              }
+            ],
+            "evals": [
+              {
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Game Type",
+                    "value"
+                  ]
+                ],
+                "value": "Scenario"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 5
+          }
+        },
+        "stats": {
+          "Contract Points": {
+            "dynamic": true,
+            "group": "Campaign",
+            "groupOrder": 2,
+            "increment": {
+              "value": 1
+            },
+            "statType": "numeric",
+            "value": 0
+          },
+          "Cost": {
+            "group": "Cost",
+            "groupOrder": 1,
+            "icons": [
+              "jerrycan"
+            ],
+            "label": "Cans",
+            "statType": "numeric",
+            "tracked": true,
+            "value": 0,
+            "visibility": "always"
+          },
+          "Game Type": {
+            "dynamic": true,
+            "group": "General",
+            "groupOrder": 1,
+            "ranks": {
+              "Scenario": {
+                "order": 0
+              },
+              "Campaign": {
+                "order": 1
+              }
+            },
+            "statType": "rank"
+          },
+          "Sponsor": {
+            "dynamic": true,
+            "group": "General",
+            "groupOrder": 1,
+            "ranks": {
+              "-": {
+                "order": 0
+              },
+              "Vex Logistics": {
+                "order": 1,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Corporate Hardware"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Well Stocked"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Might is Right"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Streamed Carnage"
+                  }
+                ]
+              },
+              "Miyaza Synth-Tech": {
+                "order": 2,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Virtuoso"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Elegance"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Showing Off"
+                  }
+                ]
+              },
+              "Krall Industrial": {
+                "order": 3,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Thumpermonkey"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Dynamo"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§All the Toys"
+                  }
+                ]
+              },
+              "Halcyon Group": {
+                "order": 4,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§NOS Addict"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Speed Demon"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Cult of Velocity"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Kiss My Asphalt"
+                  }
+                ]
+              },
+              "BIOS-LIME": {
+                "order": 5,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Live Fast"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Pinball"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Spiked Fist"
+                  }
+                ]
+              },
+              "Castellum Holdings": {
+                "order": 6,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Detainment Cabs"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Tracer-Plasma-Fire"
+                  }
+                ]
+              },
+              "Crimson Black-Ice": {
+                "order": 7,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Crew Quarters"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Runners"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Raise the Sails"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Recruitment Squad"
+                  }
+                ]
+              },
+              "Tac-Response Division": {
+                "order": 8,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Hot Pursuit"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Bogey at 12 O'Clock"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Siren"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Corporate Justice"
+                  }
+                ]
+              },
+              "Pellucid Black-Ops": {
+                "order": 9,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§MicroPlate Armor"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Tombstone"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Trunk of Junk"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§That's Entertainment"
+                  }
+                ]
+              },
+              "Maxx Cyberworks": {
+                "order": 10,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Vertigo"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Maxximum Drift"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Meshuggah"
+                  }
+                ]
+              },
+              "The Plasma Concord": {
+                "order": 11,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Plasma, Walk With Me"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Plasma-Burned Man"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Cult of Plasma"
+                  }
+                ]
+              },
+              "Tachyon, the Phantom of the Strip": {
+                "order": 12,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Graveyard Throttle"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Ghost Runner"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Soul Anchor"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§At the Crossroads"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Inexorable"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Soul Harvest"
+                  }
+                ]
+              },
+              "Coyote Cartel": {
+                "order": 13,
+                "traits": [
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Party Hard"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Dutch Courage"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Straight Shooter"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Over the Limit"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Trailer Trash"
+                  },
+                  {
+                    "path": [
+                      "{self}"
+                    ],
+                    "trait": "Sponsor Perk§Haulage"
+                  }
+                ]
+              }
+            },
+            "statType": "rank",
+            "tracked": false,
+            "value": "-",
+            "visibility": "always"
+          },
+          "Stash": {
+            "dynamic": true,
+            "group": "Campaign",
+            "groupOrder": 2,
+            "icons": [
+              "fuel-tank"
+            ],
+            "increment": {
+              "value": 1
+            },
+            "statType": "numeric",
+            "value": 0
+          },
+          "Votes": {
+            "dynamic": true,
+            "group": "General",
+            "groupOrder": 1,
+            "increment": {
+              "value": 1
+            },
+            "statType": "numeric",
+            "value": 0
+          }
+        }
+      },
+      "Special Rule§Full-Sweep": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "This weapon has a 360° arc of plasma-fire."
+      },
+      "Special Rule§Airborne": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "This Vehicle ignores obstructions, dropped weapons and terrain at all times; except that this vehicle may target other vehicles in its attack step. Other vehicles ignore this vehicle at all times, except that other vehicles may target this vehicle during their attack steps. This vehicle cannot be involved in collisions."
+      },
+      "Special Rule§Stealth-Rotor": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "At the start of this vehicle’s activation, this vehicle may make a single pivot about its centre point, up to 90 degrees."
+      },
+      "Special Rule§All-Terrain": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "This vehicle may ignore the penalties for rough and treacherous surfaces."
+      },
+      "Special Rule§Articulated": {
+        "allowed": {
+          "classifications": [
+            "Weapon—Mounted",
+            "Weapon—Dropped"
+          ]
+        },
+        "constraints": {
+          "none": [
+            "Krall Industrial"
+          ]
+        },
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "An articulated vehicle is comprised of two parts: the cab and the trailer. See Convoy Rig rules for details."
+      },
+      "Special Rule§Blast": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "For every un-canceled hit, the target immediately gains one strain marker."
+      },
+      "Special Rule§Blitz": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "During its attack step, this weapon’s vehicle may attack any number of times, up to its remaining ammo or crew stat, whichever is lesser."
+      },
+      "Special Rule§Drop-Strike": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "rules": {
+          "bombsAway": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{parent}",
+                    "included",
+                    "classification",
+                    "Weapon—Dropped",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ],
+                "value": 0
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "text": "When purchasing weapons, this vehicle may count dropped weapons as requiring 0 loadout slots."
+      },
+      "Special Rule§Operator-Fired": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "360° arc of plasma-fire."
+      },
+      "Special Rule§Sedative": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "When this vehicle declares a SMASH ATTACK during its activation remove 2 strain markers from the target vehicle, and then reduce the target vehicle’s crew value by 1 until the end of the phase."
+      },
+      "Special Rule§Electrical": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "The book doesn’t seem to say anything about this."
+      },
+      "Special Rule§Plasma-Burn": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "If this weapon deals at least one damage to a target that isn’t *On Plasma-Fire*, that target is set On Plasma-Fire."
+      },
+      "Special Rule§Full Throttle": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "This vehicle considers the long straight maneuver template to be permitted in any gear. The long straight is not considered either hazardous or trivial in any gear."
+      },
+      "Special Rule§Indirect": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "When making a shooting attack, this weapon’s vehicle may ignore Terrain and Cover during that attack."
+      },
+      "Special Rule§Subliminal Jingle": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "Vehicles that target this vehicle with a SMASH ATTACK during a collision receive no strain markers during step 6 of the collision resolution."
+      },
+      "Special Rule§Turbine Engine": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "A vehicle with a jet engine counts as having a NOS Booster with infinite ammo cells. This vehicle automatically explodes when it is totaled. A vehicle with a jet engine must use the NOS Booster every time it activates."
+      },
+      "Special Rule§Bulldozer": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "During this vehicle’s Movement Step, when the vehicle collides with another vehicle of a lighter weight-class, it may declare a Bulldozer Ram Attack as its reaction. See Convoy Rig rules."
+      },
+      "Special Rule§Pivot": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "At the start of this vehicle’s activation, if  this vehicle’s current Gear is 1, this vehicle may make a pivot about its centre to face any direction. This pivot cannot cause a Collision and cannot leave this vehicle touching an obstruction."
+      },
+      "Special Rule§Sluggish": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "Hard to maneuver but also hard to throttle. See Convoy Rig rules."
+      },
+      "Special Rule§Restricted": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "If playing with Sponsor rules, this vehicle can only be purchased by a squad with the appropriate sponsor."
+      },
+      "Special Rule§Slip Away": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "If this vehicle is targeted with a tailgate, T-bone or sideswipe ram attack, and this vehicle declares evade as its reaction, this vehicle may perform a free activation immediately after the active vehicle completes its activation. This free activation does not count as the vehicle’s activation this gear phase."
+      },
+      "Special Rule§Tight Burst": {},
+      "Special Rule§Splash": {
+        "keywords": {
+          "Tags": [
+            "Weapon Rule"
+          ]
+        },
+        "text": "When this weapon is used to attack, resolve a separate attack targeting each vehicle, including allies, under its shooting template."
+      },
+      "Special Rule§Turret": {
+        "allowed": {
+          "classifications": [
+            "Weapon—Mounted"
+          ]
+        },
+        "constraints": {
+          "none": [
+            "Krall Industrial"
+          ]
+        },
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "rules": {
+          "Only 1 weapon can mount on this turret": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "classification",
+                    [
+                      "Weapon—Mounted",
+                      "Weapon—Restricted"
+                    ],
+                    "stats",
+                    "Mounting",
+                    "value"
+                  ]
+                ],
+                "value": "360°"
+              },
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "classification",
+                    [
+                      "Weapon—Mounted",
+                      "Weapon—Restricted"
+                    ],
+                    "stats",
+                    [
+                      "Cost",
+                      "Mounting"
+                    ],
+                    "dynamic"
+                  ]
+                ],
+                "value": false
+              }
+            ],
+            "evals": [
+              {
+                "min": 2,
+                "not": true,
+                "operator": "SUM",
+                "paths": [
+                  [
+                    "{self}",
+                    "tally",
+                    [
+                      "Weapon—Mounted",
+                      "Weapon—Restricted"
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error",
+            "order": 23
+          }
+        },
+        "text": "This vehicle may count one weapon as turret-mounted without paying for the upgrade."
+      },
+      "Special Rule§Run-Over": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "After resolving a collision with an obstruction of a lower weight class during movement step 1.7, this vehicle may declare a Up and Over to ignore the obstruction for the remainder of its movement step, as it drives right over the top of it. This vehicle cannot declare a Up and Over against another vehicle with the Up and Over special rule."
+      },
+      "Special Rule§Stim-Boost": {
+        "keywords": {
+          "Tags": [
+            "Vehicle Rule"
+          ]
+        },
+        "text": "If this vehicle is involved in a collision in which both vehicles declare an evade, both vehicles must declare a single stick-throttle up immediately after the collision is resolved (gaining a strain marker as per the normal stick-throttle rules). If either vehicle is already at its max gear, the stick-throttle does not affect that vehicle’s current gear, but that vehicle does gain a strain marker."
+      },
+      "Sponsor Perk§All the Toys": {
+        "text": "Whenever a vehicle in this squad attacks with a named weapon that has not been attacked with by any vehicle during this game yet this squad gains +1 stream credit."
+      },
+      "Sponsor Perk§Straight Shooter": {
+        "text": "This vehicle does not gain a strain from the articulated rule if it selects a template that is not a straight."
+      },
+      "Sponsor Perk§At the Crossroads": {
+        "text": "This squad may choose to pay only 1 vote to redeploy a vehicle. If they do, the respawned car must gain the *Ghost Rider* special rule."
+      },
+      "Sponsor Perk§Bogey at 12 O'Clock": {
+        "text": "At the end of this vehicle’s movement step, if the Bogey is in this vehicle’s front arc of plasma-fire, in line of sight, and further than double range away, this vehicle may immediately resolve another movement step."
+      },
+      "Sponsor Perk§Plasma-Burned Man": {
+        "text": "If this vehicle is On Plasma-Fire it gains +1 to all evade dice."
+      },
+      "Sponsor Perk§Crew Quarters": {
+        "rules": {
+          "halfCostCrew": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "assets",
+                    "classification",
+                    "Vehicle",
+                    "assets",
+                    "item",
+                    "Upgrade§Extra Operator",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ],
+                "value": 2
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "pass"
+          }
+        },
+        "text": "This squad may purchase the Extra Crewmember upgrade at half the listed cost."
+      },
+      "Sponsor Perk§Cult of Plasma": {
+        "text": "At the end of the gear phase, if there are more enemy vehicles on plasma-fire than there are friendly vehicles on plasma-fire, or all enemy vehicles are on plasma-fire, this squad gains 1 stream credit for each friendly vehicle that is On Plasma-Fire."
+      },
+      "Sponsor Perk§Cult of Velocity": {
+        "text": "If this vehicle selects the long straight movement template (including when using the NOS Booster upgrade) during gear phase 1, 2, or 3, this vehicle’s controller gains 1 stream credit."
+      },
+      "Sponsor Perk§Vertigo": {
+        "text": "This vehicle may resolve any number of yaw results separately during its movement step, one after another. This can allow this vehicle to yaw more than 90 degrees during its movement step."
+      },
+      "Sponsor Perk§Dutch Courage": {
+        "text": "Vehicles in this squad only blow out when they have 8 strain."
+      },
+      "Sponsor Perk§Dynamo": {
+        "rules": {
+          "dynamo": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "assets",
+                    "classification",
+                    [
+                      "Vehicle—Standard",
+                      "Vehicle—Restricted"
+                    ],
+                    "assets",
+                    "classification",
+                    [
+                      "Weapon—Crew Fired",
+                      "Weapon—Dropped",
+                      "Weapon—Mounted",
+                      "Weapon—Restricted",
+                      "Upgrade"
+                    ],
+                    "stats",
+                    "Ammo",
+                    "increment"
+                  ]
+                ],
+                "value": 1
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 5
+          }
+        },
+        "text": "After activating in gear Phase 4, 5 or 6, this vehicle may add +1 ammo cell to a single electrical weapon or upgrade on that vehicle."
+      },
+      "Sponsor Perk§Elegance": {
+        "text": "Teams sponsored by Miyaza may not purchase vehicle types with a base Handling value of 2 or lower."
+      },
+      "Sponsor Perk§Plasma, Walk With Me": {
+        "text": "When this vehicle receives damage from any weapon or effect with the Plasma-Fire rule , this vehicle may reduce that damage by up to 3, to a minimum of 1."
+      },
+      "Sponsor Perk§Tracer-Plasma-Fire": {
+        "text": "If a vehicle belonging to this squad explodes, gain +1 stream credit if it was middleweight or +2 stream credits if it was heavyweight in addition to any votes gained for being totaled, and then discard all ammo cells from the total."
+      },
+      "Sponsor Perk§Ghost Runner": {
+        "text": "This vehicle ignores and is ignored by other vehicles at all times. This vehicle cannot be involved in collisions. This vehicle may not make shooting attacks or be attacked with shooting weapons . This vehicle may never count towards the victory conditions of a scenario."
+      },
+      "Sponsor Perk§Graveyard Throttle": {
+        "text": "At the start of the game, after deployment, all vehicle in this squad except one must gain the *Ghost Rider* special rule."
+      },
+      "Sponsor Perk§Haulage": {
+        "rules": {
+          "haulage": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{self}",
+                    "assets",
+                    "item",
+                    "Vehicle—Standard§Convoy Rig",
+                    "assets",
+                    "item",
+                    "Special Rule§Articulated",
+                    "allowed",
+                    "classifications"
+                  ]
+                ],
+                "value": "Cargo"
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "text": "Each vehicle on this squad equipped with a trailer upgrade, and each Convoy Rig, may equip a single trailer cargo upgrade for free."
+      },
+      "Sponsor Perk§Hot Pursuit": {
+        "text": "Before the first gear phase of the game, after deployment, this squad must nominate one enemy vehicle as the *Bogey*."
+      },
+      "Sponsor Perk§Inexorable": {
+        "text": "If a vehicle from this squad is a total or out of play, the vehicle may be respawned, even if other rules would ordinarily prevent that."
+      },
+      "Sponsor Perk§Kiss My Asphalt": {
+        "rules": {
+          "This squad may not purchase Gyrocopters": {
+            "evals": [
+              {
+                "max": 0,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "Drone Lifter"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          }
+        },
+        "text": "This squad may not purchase Gyrocopters."
+      },
+      "Sponsor Perk§Live Fast": {
+        "text": "If a vehicle in this squad begins the wipeout step with more strain markers than hull points during its own activation this squad gains +1 stream credit."
+      },
+      "Sponsor Perk§Maxximum Drift": {
+        "text": "If this vehicle resolves two slip results in a single drift check, it may use the medium straight in place of the slip template. If this vehicle resolves three or more slip results in a single drift check, it may use the long straight in place of the slip template."
+      },
+      "Sponsor Perk§Meshuggah": {
+        "text": "When this vehicle resolves a slip or yaw that ends within medium of a friendly vehicle without causing a collision: this squad gains +1 Stream Credit."
+      },
+      "Sponsor Perk§MicroPlate Armor": {
+        "rules": {
+          "microplate": {
+            "actions": [
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "included",
+                    "classification",
+                    [
+                      "Vehicle—Restricted",
+                      "Vehicle—Standard"
+                    ],
+                    "allowed",
+                    "items"
+                  ]
+                ],
+                "value": "Sponsor Perk§MicroPlate Armor"
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 10
+          }
+        },
+        "text": "Vehicles in this squad may purchase the MicroPlate Armor upgrade."
+      },
+      "Sponsor Perk§Might is Right": {
+        "rules": {
+          "noLight": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "constraints",
+                    "none"
+                  ]
+                ],
+                "value": "Light"
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "pass"
+          },
+          "This squad may not purchase lightweight vehicles": {
+            "evals": [
+              {
+                "min": 1,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "Light"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          }
+        },
+        "text": "This squad may not purchase lightweight vehicles."
+      },
+      "Sponsor Perk§Corporate Hardware": {
+        "rules": {
+          "tankChopper": {
+            "actions": [
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Corporate Defense Forces"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Advanced"
+              },
+              {
+                "actionType": "add",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "constraints",
+                    "any"
+                  ]
+                ],
+                "value": "Basic"
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 10
+          }
+        },
+        "text": "This squad may purchase a single Tank. This squad may purchase a single Tilt-Rotor."
+      },
+      "Sponsor Perk§NOS Addict": {
+        "text": "This squad may purchase the NOS upgrade at half the listed cost."
+      },
+      "Sponsor Perk§Over the Limit": {
+        "text": "This vehicle never considers any of the straight movement templates to be permitted. This vehicle considers veer to be permitted and trivial in any gear."
+      },
+      "Sponsor Perk§Party Hard": {
+        "text": "At the end of this vehicle’s attack step, if this vehicle has more strain markers than the sum of the strain tokens on all other enemy vehicles within medium range combined, this vehicle’s controller gains +1 stream credit for each enemy vehicle with 1+ strain markers within medium range of this vehicle."
+      },
+      "Sponsor Perk§Pinball": {
+        "text": "If a vehicle in this squad is involved in a collision during its movement step in which the point of contact on both vehicles is along their side edges and this vehicle declares a ram attack, then this vehicle may immediately resolve another movement step after the current movement step."
+      },
+      "Sponsor Perk§Recruitment Squad": {
+        "rules": {
+          "pressGang": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "assets",
+                    "classification",
+                    [
+                      "Vehicle—Standard",
+                      "Vehicle—Restricted"
+                    ],
+                    "stats",
+                    "Crew",
+                    "increment"
+                  ]
+                ],
+                "value": 1
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 5
+          }
+        },
+        "text": "When another vehicle in contact with this vehicle is totaled, this vehicle may gain either 1 crew or 2 stream credits."
+      },
+      "Sponsor Perk§Detainment Cabs": {
+        "text": "Vehicles in this squad may purchase the Detainment Cab upgrade."
+      },
+      "Sponsor Perk§Runners": {
+        "rules": {
+          "runners": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "assets",
+                    "classification",
+                    [
+                      "Vehicle—Standard",
+                      "Vehicle—Restricted"
+                    ],
+                    "stats",
+                    "Crew",
+                    "increment"
+                  ]
+                ],
+                "value": 1
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass",
+            "order": 5
+          }
+        },
+        "text": "At the end of the attack step, this vehicle may permanently reduce its crew value by any number, to a minimum of 0 crew: remove 1 hull point from any vehicle in base contact for each crew removed in this way."
+      },
+      "Sponsor Perk§Raise the Sails": {
+        "text": "After rolling drift dice, this vehicle may permanently reduce its crew value by 1, to a minimum of 0 crew to add 1 free throttle result to the drift dice result."
+      },
+      "Sponsor Perk§Showing Off": {
+        "text": "At the end of this vehicle’s activation, if it resolved at least one yaw result, and resolved at least one slip result, and changed gear at least once, and did not wipeout, then this vehicle gains a *Showing Off* token. If a vehicle with a *Showing Off* token blows out, that vehicle must discard its *Showing Off* token. At the end of this vehicle’s activation, if every in-play vehicle on this squad has a *Showing Off* token, this player discards all *Showing Off* tokens and gains 1 stream credit for each *Showing Off* token discarded in this way. Discard all *Showing Off* tokens at the end of the gear phase."
+      },
+      "Sponsor Perk§Siren": {
+        "text": "At the end of this vehicle’s activation, if this vehicle in the Bogey’s rear arc of plasma-fire (regardless of range), the Bogey must either reduce its gear by 1 or gain 2 strain."
+      },
+      "Sponsor Perk§Soul Anchor": {
+        "text": "If all in play vehicles from this squad have the Ghost Rider special rule immediately remove all vehicles on this squad from play."
+      },
+      "Sponsor Perk§Soul Harvest": {
+        "text": "If this vehicle’s movement template comes into contact with an enemy vehicle: this vehicle gains 1 Soul token, even if the enemy vehicle is being ignored. If this vehicle’s movement template comes into contact with a friendly vehicle without the *Ghost Rider* rule that it did not start in contact with, choose one: either gain 1 vote for each Soul token; or repair two Hull Points on the vehicle without the *Ghost Rider* rule for each Soul token. Then discard all Soul tokens."
+      },
+      "Sponsor Perk§Speed Demon": {
+        "text": "When this vehicle gains strain as a result of the NOS Booster, this vehicle only gains strain markers until it has 3 strain markers, rather than 5 strain markers."
+      },
+      "Sponsor Perk§Spiked Fist": {
+        "rules": {
+          "spikedFist": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{roster}",
+                    "assets",
+                    "classification",
+                    [
+                      "Vehicle—Standard",
+                      "Vehicle—Restricted"
+                    ],
+                    "assets",
+                    "item",
+                    "Upgrade§Ram-Plate",
+                    "stats",
+                    "Loadout Slots",
+                    "value"
+                  ]
+                ],
+                "value": 0
+              }
+            ],
+            "evals": [],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "text": "This vehicle counts the Ram upgrade as requiring zero loadout slots."
+      },
+      "Sponsor Perk§Corporate Justice": {
+        "text": "If the Bogey blows out this squad as a whole gains 2 stream credits. If the Bogey is totaled this squad as a whole gains 4 stream credits."
+      },
+      "Sponsor Perk§Streamed Carnage": {
+        "text": "If a vehicle in this squad causes 6 or more hits in a single attack step, before evades, this squad gains +1 stream credit."
+      },
+      "Sponsor Perk§That's Entertainment": {
+        "text": "Whenever a dropped weapon template that was placed by this squad is removed from play, this squad gains 1 Stream Credit."
+      },
+      "Sponsor Perk§Thumpermonkey": {
+        "text": "This squad may purchase electrical weapons and upgrades."
+      },
+      "Sponsor Perk§Tombstone": {
+        "text": "If the shooting template of a shooting attack touches the rear edge of this vehicle, this vehicle gains +1 to its evade rolls. During this vehicle’s  attack step, this vehicle may gain 2 strain. If it does, all collisions involving this vehicle are considered to be head-on until the start of its next activation."
+      },
+      "Sponsor Perk§Trailer Trash": {
+        "rules": {
+          "Add a Convoy Rig or put a trailer on a middleweight or heavy!": {
+            "evals": [
+              {
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "included",
+                    "classification",
+                    [
+                      "Vehicle—Standard",
+                      "Vehicle—Restricted"
+                    ],
+                    "rules",
+                    "coyoteTrailers",
+                    "return"
+                  ]
+                ],
+                "value": 0
+              },
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{roster}",
+                    "tally",
+                    "Convoy Rig"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          }
+        },
+        "text": "This squad must contain at least one medium or heavyweight vehicle equipped with a trailer upgrade, or a Convoy Rig."
+      },
+      "Sponsor Perk§Trunk of Junk": {
+        "text": "You may attack with any number of dropped weapons in a single activation."
+      },
+      "Sponsor Perk§Virtuoso": {
+        "text": "The first time each vehicle in this squad uses push it in an activation they may push it without gaining a strain marker."
+      },
+      "Sponsor Perk§Well Stocked": {
+        "text": "This squad considers any weapon with the ammo 3 special rule to instead have the ammo 4 special rule when purchased."
+      },
+      "Upgrade§Composite Plating": {
+        "aspects": {
+          "Unique": false
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Hull": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 2,
+            "visibility": "hidden"
+          }
+        },
+        "text": "+2 Hull"
+      },
+      "Upgrade§Experimental Reactor": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "statType": "numeric",
+            "value": 5
+          }
+        },
+        "text": "See rulebook"
+      },
+      "Upgrade§Experimental Phaseshifter": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "statType": "numeric",
+            "value": 7
+          }
+        },
+        "text": "See rulebook"
+      },
+      "Upgrade§Charge-Ram": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "rules": {
+          "Select a facing.": {
+            "evals": [
+              {
+                "actionable": true,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Exploding Ram Facing",
+                    "value"
+                  ]
+                ],
+                "value": "-"
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "warning"
+          }
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 3
+          },
+          "Facing": {
+            "dynamic": true,
+            "label": "Facing",
+            "ranks": {
+              "-": {
+                "order": 0
+              },
+              "ramFront": {
+                "format": "Front",
+                "hotkey": "f",
+                "order": 1,
+                "tracking": {}
+              },
+              "ramBack": {
+                "format": "Back",
+                "hotkey": "b",
+                "order": 2,
+                "tracking": {}
+              },
+              "ramLeft": {
+                "format": "Left",
+                "hotkey": "l",
+                "order": 3,
+                "tracking": {}
+              },
+              "ramRight": {
+                "format": "Right",
+                "hotkey": "r",
+                "order": 4,
+                "tracking": {}
+              }
+            },
+            "statOrder": 0,
+            "statType": "rank",
+            "tracked": false,
+            "value": "-",
+            "visibility": "normal"
+          }
+        },
+        "text": "Highly Explosive."
+      },
+      "Upgrade§Extra Operator": {
+        "aspects": {
+          "Unique": false
+        },
+        "rules": {
+          "Too many Extra Crewmembers": {
+            "evals": [
+              {
+                "max": [
+                  "{parent}",
+                  "stats",
+                  "Crew",
+                  "processed",
+                  "numeric",
+                  "default"
+                ],
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "tally",
+                    "Extra Operator"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "error"
+          }
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          },
+          "Crew": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 1,
+            "visibility": "hidden"
+          }
+        },
+        "text": "+1 Crew, up to double starting crew"
+      },
+      "Upgrade§Improvised Sludge Thrower": {
+        "stats": {
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 2
+          }
+        },
+        "text": "This vehicle may place the burst templates for its dropped weapons anywhere within a 360 arc of plasma-fire that is at least partially within medium range of this vehicle."
+      },
+      "Upgrade§Sonic Siren": {
+        "keywords": {
+          "Keywords": [
+            "Tac-Response Division"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "statType": "numeric",
+            "value": 2
+          }
+        }
+      },
+      "Upgrade§MicroPlate Armor": {
+        "keywords": {
+          "Keywords": [
+            "Pellucid Black-Ops"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 6
+          },
+          "Hull": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 2,
+            "visibility": "hidden"
+          }
+        },
+        "text": "+2 hull points"
+      },
+      "Upgrade§NOS Booster": {
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 6
+          }
+        },
+        "text": "Once per activation, at the start of a Movement Step, this vehicle may declare that it is using a NOS Booster. If it does, this vehicle makes an immediate forced, Long Straight move forward, and then gains strain markers until it has 5 strain markers. It then resolves its Movement Step as normal, except that it may not reverse. Then, at the end of the movement step, it again gains Strain Markers until it has 5 Strain Markers."
+      },
+      "Upgrade§Detainment Cab": {
+        "aspects": {
+          "Unique": true
+        },
+        "keywords": {
+          "Keywords": [
+            "Castellum Holdings"
+          ]
+        },
+        "rules": {
+          "minCost5": {
+            "actions": [
+              {
+                "actionType": "set",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{parent}",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ],
+                "value": 5
+              }
+            ],
+            "evals": [
+              {
+                "actionable": true,
+                "min": 5,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "stats",
+                    "Cost",
+                    "value"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "pass"
+          }
+        },
+        "stats": {
+          "Cost": {
+            "value": -4
+          },
+          "Hull": {
+            "dynamic": false,
+            "statType": "numeric",
+            "tracked": true,
+            "value": -2,
+            "visibility": "normal"
+          }
+        },
+        "text": "Reduce the cost of this vehicle by 4 Cans to a minimum of 5 Cans. Reduce the hull value of this vehicle by 2. May only be purchased by middleweight vehicles. May only be purchased once for each vehicle."
+      },
+      "Upgrade§Ram-Plate": {
+        "aspects": {
+          "Unique": false
+        },
+        "rules": {
+          "Rams must have different facings.": {
+            "evals": [
+              {
+                "actionable": false,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Ram Facing",
+                    "value"
+                  ]
+                ]
+              },
+              {
+                "actionable": true,
+                "max": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "tracked",
+                    "{0string}"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "error"
+          },
+          "Select a facing.": {
+            "evals": [
+              {
+                "actionable": true,
+                "not": true,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{self}",
+                    "stats",
+                    "Ram Facing",
+                    "value"
+                  ]
+                ],
+                "value": "-"
+              }
+            ],
+            "evaluate": "AND",
+            "failState": "warning"
+          }
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Ram Facing": {
+            "dynamic": true,
+            "label": "Facing",
+            "ranks": {
+              "-": {
+                "order": 0
+              },
+              "ramFront": {
+                "format": "Front",
+                "hotkey": "f",
+                "order": 1,
+                "tracking": {
+                  "ramFront": 1
+                }
+              },
+              "ramBack": {
+                "format": "Back",
+                "hotkey": "b",
+                "order": 2,
+                "tracking": {
+                  "ramBack": 1
+                }
+              },
+              "ramLeft": {
+                "format": "Left",
+                "hotkey": "l",
+                "order": 3,
+                "tracking": {
+                  "ramLeft": 1
+                }
+              },
+              "ramRight": {
+                "format": "Right",
+                "hotkey": "r",
+                "order": 4,
+                "tracking": {
+                  "ramRight": 1
+                }
+              }
+            },
+            "statOrder": 0,
+            "statType": "rank",
+            "tracked": false,
+            "value": "-",
+            "visibility": "normal"
+          }
+        },
+        "text": "No strain gained during collisions on declared facing."
+      },
+      "Upgrade§Roll Cage": {
+        "stats": {
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 4
+          }
+        },
+        "text": "May ignore hits received from Flips."
+      },
+      "Upgrade§Tracks": {
+        "assets": {
+          "traits": [
+            "Special Rule§All-Terrain"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Handling": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 1,
+            "visibility": "hidden"
+          },
+          "Max Gear": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": -1,
+            "visibility": "hidden"
+          }
+        },
+        "text": "+1 Handing, -1 Max Gear."
+      },
+      "Upgrade§Heavy Trailer": {
+        "allowed": {
+          "classifications": [
+            "Cargo",
+            "Weapon—Mounted"
+          ]
+        },
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "assets": {
+          "traits": [
+            "Special Rule§Articulated",
+            "Special Rule§Sluggish",
+            "Special Rule§Bulldozer"
+          ]
+        },
+        "constraints": {
+          "any": [
+            "Basic",
+            "Advanced"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Coyote Cartel"
+          ]
+        },
+        "rules": {
+          "heavyTrailer": {
+            "actions": [
+              {
+                "actionType": "remove",
+                "iterations": 1,
+                "paths": [
+                  [
+                    "{parent}",
+                    "allowed",
+                    "items"
+                  ]
+                ],
+                "value": "Upgrade§Heavy Trailer"
+              }
+            ],
+            "evals": [
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "tally",
+                    "Middle"
+                  ]
+                ]
+              },
+              {
+                "min": 1,
+                "not": false,
+                "operator": "AND",
+                "paths": [
+                  [
+                    "{parent}",
+                    "tally",
+                    "Light"
+                  ]
+                ]
+              }
+            ],
+            "evaluate": "OR",
+            "failState": "pass"
+          }
+        },
+        "stats": {
+          "Loadout Slots": {
+            "statType": "numeric",
+            "value": -3
+          },
+          "Cost": {
+            "statType": "numeric",
+            "value": 12
+          },
+          "Trailer": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 1,
+            "visibility": "hidden"
+          }
+        }
+      },
+      "Upgrade§Light Trailer": {
+        "allowed": {
+          "classifications": [
+            "Cargo",
+            "Weapon—Mounted"
+          ]
+        },
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "assets": {
+          "traits": [
+            "Special Rule§Articulated",
+            "Special Rule§Sluggish",
+            "Special Rule§Bulldozer"
+          ]
+        },
+        "constraints": {
+          "any": [
+            "Basic",
+            "Advanced"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Coyote Cartel"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 4
+          },
+          "Trailer": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 1,
+            "visibility": "hidden"
+          }
+        }
+      },
+      "Upgrade§Middle Trailer": {
+        "allowed": {
+          "classifications": [
+            "Cargo",
+            "Weapon—Mounted"
+          ]
+        },
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "assets": {
+          "traits": [
+            "Special Rule§Articulated",
+            "Special Rule§Sluggish",
+            "Special Rule§Bulldozer"
+          ]
+        },
+        "constraints": {
+          "any": [
+            "Basic",
+            "Advanced"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Coyote Cartel"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": -1
+          },
+          "Cost": {
+            "value": 8
+          },
+          "Trailer": {
+            "statType": "numeric",
+            "tracked": true,
+            "value": 1,
+            "visibility": "hidden"
+          }
+        }
+      },
+      "Vehicle§Med-Evac Van": {
+        "assets": {
+          "traits": [
+            "Special Rule§Stim-Boost",
+            "Special Rule§Sedative"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Middle"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 20
+          },
+          "Crew": {
+            "value": 3
+          },
+          "Handling": {
+            "value": 2
+          },
+          "Hull": {
+            "value": 12
+          },
+          "Max Gear": {
+            "value": 5
+          }
+        }
+      },
+      "Vehicle§Hover-Bike": {
+        "assets": {
+          "traits": [
+            "Special Rule§Full Throttle",
+            "Special Rule§Pivot"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Light"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 5
+          },
+          "Crew": {
+            "value": 1
+          },
+          "Handling": {
+            "value": 5
+          },
+          "Hull": {
+            "value": 4
+          },
+          "Max Gear": {
+            "value": 6
+          }
+        }
+      },
+      "Vehicle§Hover-Bike w/Drone Pod": {
+        "assets": {
+          "traits": [
+            "Special Rule§Full Throttle",
+            "Special Rule§Pivot"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Light"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 8
+          },
+          "Crew": {
+            "value": 2
+          },
+          "Handling": {
+            "value": 5
+          },
+          "Hull": {
+            "value": 4
+          },
+          "Max Gear": {
+            "value": 6
+          }
+        }
+      },
+      "Vehicle§Recon Recon Buggy": {
+        "assets": {
+          "traits": [
+            "Upgrade§Roll Cage"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ],
+          "Weight": [
+            "Light"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 2
+          },
+          "Crew": {
+            "value": 2
+          },
+          "Handling": {
+            "value": 4
+          },
+          "Hull": {
+            "value": 6
+          },
+          "Max Gear": {
+            "value": 6
+          }
+        }
+      },
+      "Vehicle§Riot Transport": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ],
+          "Weight": [
+            "Heavy"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 30
+          },
+          "Crew": {
+            "value": 8
+          },
+          "Handling": {
+            "value": 2
+          },
+          "Hull": {
+            "value": 16
+          },
+          "Max Gear": {
+            "value": 3
+          }
+        }
+      },
+      "Vehicle§Sedan": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ],
+          "Weight": [
+            "Middle"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 12
+          },
+          "Crew": {
+            "value": 2
+          },
+          "Handling": {
+            "value": 3
+          },
+          "Hull": {
+            "value": 10
+          },
+          "Max Gear": {
+            "value": 5
+          }
+        }
+      },
+      "Vehicle§Sprint Frame": {
+        "assets": {
+          "traits": [
+            "Special Rule§Turbine Engine"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Light"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 5
+          },
+          "Crew": {
+            "value": 1
+          },
+          "Handling": {
+            "value": 4
+          },
+          "Hull": {
+            "value": 4
+          },
+          "Max Gear": {
+            "value": 6
+          }
+        }
+      },
+      "Vehicle§Drone Lifter": {
+        "assets": {
+          "traits": [
+            "Special Rule§Airborne",
+            "Special Rule§Stealth-Rotor",
+            "Special Rule§Drop-Strike"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Middle"
+          ]
+        },
+        "stats": {
+          "Cost": {
+            "value": 10
+          },
+          "Crew": {
+            "value": 1
+          },
+          "Handling": {
+            "value": 4
+          },
+          "Hull": {
+            "value": 4
+          },
+          "Max Gear": {
+            "value": 6
+          }
+        }
+      },
+      "Vehicle§Heavy Hauler": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ],
+          "Weight": [
+            "Heavy"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 5
+          },
+          "Cost": {
+            "value": 25
+          },
+          "Crew": {
+            "value": 4
+          },
+          "Handling": {
+            "value": 2
+          },
+          "Hull": {
+            "value": 14
+          },
+          "Max Gear": {
+            "value": 3
+          }
+        }
+      },
+      "Vehicle§Tilt-Rotor": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "assets": {
+          "traits": [
+            "Special Rule§Airborne",
+            "Special Rule§Stealth-Rotor",
+            "Special Rule§Restricted",
+            "Special Rule§Drop-Strike"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Corporate Defense Forces"
+          ],
+          "Weight": [
+            "Heavy"
+          ],
+          "Tags": []
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 4
+          },
+          "Cost": {
+            "value": 30
+          },
+          "Crew": {
+            "value": 3
+          },
+          "Handling": {
+            "value": 3
+          },
+          "Hull": {
+            "value": 8
+          },
+          "Max Gear": {
+            "value": 4
+          }
+        }
+      },
+      "Vehicle§Mobile Cover Vendor": {
+        "assets": {
+          "traits": [
+            "Special Rule§Subliminal Jingle"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Middle"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 8
+          },
+          "Crew": {
+            "value": 2
+          },
+          "Handling": {
+            "value": 2
+          },
+          "Hull": {
+            "value": 10
+          },
+          "Max Gear": {
+            "value": 4
+          }
+        }
+      },
+      "Vehicle§Urban Crusher": {
+        "assets": {
+          "traits": [
+            "Special Rule§All-Terrain",
+            "Special Rule§Run-Over"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Heavy"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 4
+          },
+          "Cost": {
+            "value": 25
+          },
+          "Crew": {
+            "value": 3
+          },
+          "Handling": {
+            "value": 3
+          },
+          "Hull": {
+            "value": 8
+          },
+          "Max Gear": {
+            "value": 4
+          }
+        }
+      },
+      "Vehicle§Executive Coupe": {
+        "assets": {
+          "traits": [
+            "Special Rule§Slip Away"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ],
+          "Weight": [
+            "Middle"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 15
+          },
+          "Crew": {
+            "value": 1
+          },
+          "Handling": {
+            "value": 4
+          },
+          "Hull": {
+            "value": 8
+          },
+          "Max Gear": {
+            "value": 6
+          }
+        }
+      },
+      "Vehicle§Mobile Bunker": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "assets": {
+          "traits": [
+            "Special Rule§Pivot",
+            "Special Rule§Run-Over",
+            "Special Rule§All-Terrain",
+            "Special Rule§Turret",
+            "Special Rule§Restricted"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Corporate Defense Forces"
+          ],
+          "Weight": [
+            "Heavy"
+          ],
+          "Tags": []
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 4
+          },
+          "Cost": {
+            "value": 40
+          },
+          "Crew": {
+            "value": 3
+          },
+          "Handling": {
+            "value": 4
+          },
+          "Hull": {
+            "value": 20
+          },
+          "Max Gear": {
+            "value": 3
+          }
+        }
+      },
+      "Vehicle§Hauler": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ],
+          "Weight": [
+            "Middle"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 15
+          },
+          "Crew": {
+            "value": 3
+          },
+          "Handling": {
+            "value": 2
+          },
+          "Hull": {
+            "value": 12
+          },
+          "Max Gear": {
+            "value": 4
+          }
+        }
+      },
+      "Vehicle§Convoy Rig": {
+        "assets": {
+          "traits": [
+            "Special Rule§Sluggish",
+            "Special Rule§Articulated"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Weight": [
+            "Heavy"
+          ]
+        },
+        "stats": {
+          "Loadout Slots": {
+            "value": 5
+          },
+          "Cost": {
+            "value": 36
+          },
+          "Crew": {
+            "value": 5
+          },
+          "Handling": {
+            "value": 2
+          },
+          "Hull": {
+            "value": 26
+          },
+          "Max Gear": {
+            "value": 4
+          }
+        }
+      },
+      "Weapon—Crew Fired§Riot Scattergun": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired",
+            "Special Rule§Splash"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 2
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired§Gas Grenades": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired",
+            "Special Rule§Indirect",
+            "Special Rule§Blitz"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 5
+          },
+          "Attack Dice": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Choking Gas"
+      },
+      "Weapon—Crew Fired§Frag Grenades": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired",
+            "Special Rule§Blast",
+            "Special Rule§Indirect",
+            "Special Rule§Blitz"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 5
+          },
+          "Attack Dice": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired§Sidearm": {
+        "aspects": {
+          "Lock Qty": true,
+          "Unique": true
+        },
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ]
+        },
+        "stats": {
+          "Attack Dice": {
+            "value": 1
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired§Heavy Pistol": {
+        "assets": {
+          "traits": [
+            "Special Rule§Blast",
+            "Special Rule§Operator-Fired"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 3
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired§Incendiary Bottles": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired",
+            "Special Rule§Plasma-Burn",
+            "Special Rule§Indirect",
+            "Special Rule§Blitz"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 5
+          },
+          "Attack Dice": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired§Shotgun": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "*",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Crew Fired§Mono-wire Nets": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired",
+            "Special Rule§Blast"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 2
+          }
+        }
+      },
+      "Weapon—Crew Fired§SMG": {
+        "assets": {
+          "traits": [
+            "Special Rule§Operator-Fired"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 5
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Dropped§Caltrop Spreader": {
+        "assets": {
+          "traits": [
+            "Special Rule§Tight Burst"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 2
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          }
+        }
+      },
+      "Weapon—Dropped§Bond-Foam Spreader": {
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          }
+        }
+      },
+      "Weapon—Dropped§Mine Dropper": {
+        "assets": {
+          "traits": [
+            "Special Rule§Tight Burst",
+            "Special Rule§Blast"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 4
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          }
+        }
+      },
+      "Weapon—Dropped§Plasma Dropper": {
+        "assets": {
+          "traits": [
+            "Special Rule§Tight Burst",
+            "Special Rule§Plasma-Burn"
+          ]
+        },
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 4
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 1
+          }
+        }
+      },
+      "Weapon—Dropped§Slick Sprayer": {
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Cost": {
+            "value": 2
+          }
+        }
+      },
+      "Weapon—Dropped§Drone Bombers": {
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 4
+          },
+          "Loadout Slots": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Cost": {
+            "value": 3
+          }
+        }
+      },
+      "Weapon—Dropped§Sentry Drone": {
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 2
+          },
+          "Loadout Slots": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Cost": {
+            "value": 3
+          }
+        }
+      },
+      "Weapon—Dropped§Smoke Dropper": {
+        "keywords": {
+          "Keywords": []
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Cost": {
+            "value": 1
+          }
+        }
+      },
+      "Weapon—Mounted§Rail Cannon": {
+        "assets": {
+          "traits": [
+            "Special Rule§Blast"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 8
+          },
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 6
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "+2 strain if not Tank."
+      },
+      "Weapon—Mounted§ARC-Lightning Projector": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Tags": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "value": 6
+          },
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 6
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Arc chain in short range"
+      },
+      "Weapon—Mounted§Shoulder-Launch RPG": {
+        "assets": {
+          "traits": [
+            "Special Rule§Blast"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Megacorp Field Gun": {
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "value": 10
+          },
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 1
+          },
+          "Mounting": {
+            "dynamic": false,
+            "value": "Front"
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Medium straight backwards, gear=1, strain +3"
+      },
+      "Weapon—Mounted§Combat Laser": {
+        "assets": {
+          "traits": [
+            "Special Rule§Splash"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 5
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Coherent Beam": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 3
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "5+ un-cancelled hits removes target from play."
+      },
+      "Weapon—Mounted§Plasma Thrower": {
+        "assets": {
+          "traits": [
+            "Special Rule§Splash",
+            "Special Rule§Plasma-Burn",
+            "Special Rule§Indirect"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 6
+          },
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Grappling Manipulator": {
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 6
+          }
+        }
+      },
+      "Weapon—Mounted§Grav Gun": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Tags": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "value": 3
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 2
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Gravity Manipulation"
+      },
+      "Weapon—Mounted§Mag-Tether": {
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "value": 5
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 2
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Heavy Auto-Rifle": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ]
+        },
+        "stats": {
+          "Attack Dice": {
+            "value": 3
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 3
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Kinetic Super Booster": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Tags": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "value": null
+          },
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 6
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Gear +1 instead of damage."
+      },
+      "Weapon—Mounted§Auto-Rifle": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ]
+        },
+        "stats": {
+          "Attack Dice": {
+            "value": 2
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 2
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Signal Jammer": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Tags": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Cost": {
+            "value": 2
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Target cannot discard ammo next activation."
+      },
+      "Weapon—Mounted§Minigun": {
+        "keywords": {
+          "Keywords": [
+            "Basic"
+          ]
+        },
+        "stats": {
+          "Attack Dice": {
+            "value": 4
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 5
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Smart-Mortar": {
+        "assets": {
+          "traits": [
+            "Special Rule§Indirect"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 4
+          },
+          "Loadout Slots": {
+            "value": 1
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Smart Rockets": {
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "value": 6
+          },
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 5
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Sub-Sonic Thumper": {
+        "assets": {
+          "traits": [
+            "Special Rule§Electrical",
+            "Special Rule§Indirect",
+            "Special Rule§Full-Sweep"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ],
+          "Tags": [
+            "Krall Industrial"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 1
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "value": 2
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        },
+        "text": "Targets make gear+2 (max 6) flip check."
+      },
+      "Weapon—Mounted§Sonic Wall": {
+        "assets": {
+          "traits": [
+            "Special Rule§Full-Sweep"
+          ]
+        },
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Junk Catapult": {
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "value": 3
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "value": 4
+          },
+          "Cost": {
+            "value": 4
+          },
+          "Range": {
+            "statType": "rank"
+          }
+        }
+      },
+      "Weapon—Mounted§Wrecking Ball": {
+        "keywords": {
+          "Keywords": [
+            "Advanced"
+          ]
+        },
+        "stats": {
+          "Ammo": {
+            "ranks": {
+              "0": {
+                "format": "-",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Attack Dice": {
+            "ranks": {
+              "0": {
+                "format": "*",
+                "order": 0
+              }
+            },
+            "statType": "rank"
+          },
+          "Loadout Slots": {
+            "value": 3
+          },
+          "Cost": {
+            "statType": "numeric",
+            "value": 2
+          }
+        }
+      }
+    }
+  }
+}
