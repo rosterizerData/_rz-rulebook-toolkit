@@ -181,7 +181,7 @@ Roster has a "Detachment" or "Tier" rank stat that opens or closes which sub-cla
 
 If you also want Advanced to inherit Intermediate access, add a third rule that adds `Squad—Intermediate` when Tier=Advanced.
 
-In practice this lives on the `Roster§Roster` catalog item rather than the `Roster` class. `{self}` and `{roster}` both resolve to the roster node when the rule is attached there; shipped rulebooks default to `{self}`.
+This lives on the `Roster` class in `assetTaxonomy` (the current format has no `Roster§Roster` item; older rulebooks that carried one are lifted into the class on import). `{self}` and `{roster}` both resolve to the roster node when the rule is attached there; shipped rulebooks default to `{self}`.
 
 ## 4. Faction filter via constraint path-ref
 

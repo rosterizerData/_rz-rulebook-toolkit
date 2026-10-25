@@ -58,7 +58,7 @@ When you bail out, describe specifically what the problem is and what decision t
 
 - Rules that are **identical across all items of a class** → `assetTaxonomy["ClassName"].rules`
 - Rules that vary per item (different values, different wargear lists) → `assetCatalog["ClassName§ItemName"].rules`
-- Rules that **modify what the roster allows** → `assetCatalog["Roster§Roster"].rules`
+- Rules that **modify what the roster allows** → `assetTaxonomy["Roster"].rules` (the root is the `Roster` class; the current format has no `Roster§Roster` item)
 - When in doubt, prefer the catalog item — it's easier to promote to the taxonomy later than to unpick a class-level rule that's wrong for some items
 
 ## Rule ordering

@@ -30,10 +30,9 @@ Once you have answers, produce a single `.rulebook` JSON file with:
 - Each class has: `aspects`, `stats` (with correct `statType`, `visibility`, and `tracked` where needed), `keywords` category declarations, `allowed.classifications`
 - The stat columns in the taxonomy define which columns will appear in Phase 2 CSVs — include every stat that will be needed for data entry, not just the ones needed for rules
 - Use `templateClass` inheritance where classes share a stat line (e.g. Infantry and Vehicle both extend a base Unit class)
-- The `Roster` class should declare `allowed.classifications` for all top-level containers
+- The `Roster` class IS the roster root (there is no `Roster§Roster` catalog item in the current format): it declares `allowed.classifications` for all top-level containers, a Points budget stat if the game uses one, any faction/allegiance rank stats, `aspects.Label` for what the game calls a roster, and a `text` field with a brief build-order guide. Do not author `Type`, `Visibility`, `Rename`, `Describe`, `Collapse`, `Lock Qty`, `Unique` or `Assetless` on it; the app stamps those.
 
 ### `assetCatalog`
-- One `Roster§Roster` item: `allowed`, `aspects` (`Lock Qty`, `Unique`, `Rename`, `Describe`, `Collapse`, `Type: conceptual`), a Points budget stat if the game uses one, any faction/allegiance rank stats, and a `text` field with a brief build-order guide
 - **One concrete item per leaf class** — use placeholder stats, but use **real names from the game** for both the class and item designation (e.g. `Troops§Tactical Squad`, not `Unit§Example Unit`). These placeholders will be overwritten by the Phase 2 CSV import, so their stats don't need to be accurate — but their names and keyword values should be correct so the import target is obvious
 - Each item must have: correct `keywords`, any `assets.traits` that are always present, and a `text` field noting what makes this item special (or "placeholder — will be replaced by CSV import" if unknown)
 
@@ -77,17 +76,16 @@ Do **not** add per-unit wargear rules, cost formulas, or inter-unit constraint r
           "Points": { "statType": "numeric", "tracked": true, "value": 0, "visibility": "normal" }
         }
       },
-      "Roster": {}
-    },
-    "assetCatalog": {
-      "Roster§Roster": {
-        "aspects": { "Lock Qty": true, "Unique": true, "Rename": true, "Describe": true, "Collapse": true, "Type": "conceptual" },
+      "Roster": {
+        "aspects": { "Label": "Army" },
         "allowed": { "classifications": ["Unit"] },
         "stats": {
           "Points": { "statType": "numeric", "tracked": true, "value": 0, "visibility": "always", "groupOrder": -1, "format": "{v} / {max}", "max": 1000 }
         },
         "text": "Build order placeholder."
-      },
+      }
+    },
+    "assetCatalog": {
       "Unit§[Real Unit Name From Game]": {
         "keywords": { "Faction": ["[Real Faction Name]"], "Role": ["Troops"] },
         "stats": { "Move": { "value": 0 }, "Points": { "value": 0 } },

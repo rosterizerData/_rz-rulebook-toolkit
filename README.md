@@ -22,6 +22,7 @@ The pieces aren't independent. Build them in this sequence:
 2. **`docs/RULE_PATTERNS.md`** — cookbook of common idioms (mutex via Unique, gating via constraints, SUM-tracked points). References the authoring doc.
 2b. **`docs/CAMPAIGN_TRACKING.md`** — campaign-style mini-games (counters, trackers, honour families, gates) and the engine facts they depend on, from the 40k 11e Crusade build.
 3. **`docs/PATH_SYNTAX.md`** — eval/action path syntax reference, including the full writable path table derived from the engine's path option tree.
+3. **`docs/RZ_DATA_FORMAT_PRINCIPLES.md`** — the rules that are easy to get wrong in the current format: the `Roster` class is the root (no `Roster§Roster` item), sparseness, child-list shapes, what the engine stamps and a book never writes, the legacy spellings the importer rewrites.
 4. **`docs/BSDATA_INGESTION.md`** — BSData XML → Rosterizer concept map and notes for building a fresh ingestion tool. Includes `BS_schema.png` (BSData ER diagram, source unknown).
 4. **`examples/bugWars/`** — obfuscated 40k chain (core → faction → army → sub-army). Worked example for inheritance/dependency rulebooks.
 5. **`examples/cyberHits/`** — obfuscated Gaslands. Worked example for the flat single-file shape.
@@ -39,6 +40,8 @@ The pieces aren't independent. Build them in this sequence:
 - `tools/` — `rz_simulate.py` engine core; future linter/diff
 - `examples/bugWars/` — obfuscated 40k chain (core, faction, army, sub-army)
 - `examples/cyberHits/` — obfuscated Gaslands (flat single-file shape)
+
+The examples keep the shapes they shipped with, including a `Roster§Roster` catalog item as the root; the current Rosterizer lifts that item into the `Roster` class on import (`docs/RZ_DATA_FORMAT_PRINCIPLES.md`, "Legacy spellings"). Write new rulebooks with the `Roster` class as the root.
 
 ## Provenance notes
 
