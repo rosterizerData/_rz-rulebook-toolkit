@@ -26,7 +26,7 @@ A rulebook is a JSON file that describes a tabletop game's data model and rules.
 
 A class can extend another class via `templateClass`. Inheritance flattens during composition — you don't write inheritance handling, the engine does.
 
-The roster instance itself is configured by a catalog item keyed `Roster§Roster`. Stats, rules, allowed sub-classes, and constraints declared there shape the roster as a whole. Inside rules attached to that item, `{self}` and `{roster}` both resolve to the roster node (use `{self}` by convention — it's what shipped rulebooks use).
+The roster instance itself is configured by the **`Roster` class in `assetTaxonomy`** — there is no `Roster§Roster` catalog item in the current format (older rulebooks carried one; the importer lifts it into the class). Stats, rules, allowed sub-classes, and constraints declared on the `Roster` class shape the roster as a whole. Inside rules attached to it, `{self}` and `{roster}` both resolve to the roster node (use `{self}` by convention — it's what shipped rulebooks use). The root's behavioural aspects (`Type`, `Visibility`, `Rename`, `Describe`, `Collapse`, `Lock Qty`, `Unique`, `Assetless`) are stamped by the app; a book authors only `Label` and the grouping aspects on it. See `RZ_DATA_FORMAT_PRINCIPLES.md`.
 
 ## The vocabulary
 
@@ -274,10 +274,24 @@ A class can declare `templateClass: "OtherClass"` to inherit. Inheritance is mul
 }
 ```
 
+### When to split a class, and when not to
+
+The published rulebooks template far more than a first draft tends to. A flat skeleton with one `Weapon` class and one `Perk` class holds the data but loses what the engine can do with the distinctions, so the data step fills columns the rules step then cannot reach. The test for each candidate split is what the engine can do with it:
+
+- **Same stat line, different placement or rules → a sub-class.** Gaslands' weapons share one stat line (Range, Attack Dice, Build Slots, Cost), but a crew-fired weapon, a mounted weapon and a dropped weapon go on different vehicles under different rules; the book has `Weapon—Crew Fired : Weapon`, `Weapon—Mounted : Weapon`, `Weapon—Dropped : Weapon`. A parent's `allowed.classifications` can admit one sub-class and refuse another, a rule can target one, and the inventory groups by class — none of which a keyword on a flat `Weapon` gives you.
+- **Different only in a value → a keyword or a rank.** A vehicle's weight (Lightweight, Middleweight, Heavyweight) moves a number here and there but changes nothing about what the vehicle may hold or which rules run; the book makes it a keyword category on `Vehicle`. A faction on a model is a keyword; a faction chosen for the whole roster is a rank stat on the root.
+- **A selector whose options carry entries of their own → a class.** Gaslands' sponsors each bring their own perks: the book has `Sponsor Perk : Perk`, with the sponsor as a rank stat on the roster that gates which ones are allowed. Trench Crusade's factions and variants carry whole unit lists and equipment rules, so the book makes `Faction` and `Variant` classes whose items the roster takes as traits, rather than a bare rank.
+- **A base class nobody adds directly → template only.** Trench Crusade's `Equipment` is the stat line (Ducats, Glory) that `Weapon`, `Armour` and the equipment proper share; `Weapon` in turn is the base of `Melee Weapon` and `Ranged Weapon`. The player adds a Ranged Weapon; the chain gives it its costs. A class that SHOULD be addable as itself carries `"aspects": { "Assetless": true }`; a pure base carries nothing and offers nothing.
+- **Containers are classes.** What a player builds (a warband, a squad, a vehicle) and what sits inside it are different classes even when they share no stats: `allowed.classifications` is how the tree takes its shape, and a container's class is where the engine counts (`tally`) and sums (`tracked`).
+- **One class per kind the game names.** Abilities, special rules, injuries and damage results are entries a player reads and a rule references; they are classes with items (Trench Crusade's `Ability` is its largest class, 115 entries; Gaslands has `Special Rule`, `Injury`, `Damage`, `Cargo` for its campaign play). Leaving a kind out of the skeleton leaves its data nowhere to go.
+
+Template when the chain has at least one level that matters: a sub-class with no stat, rule or placement of its own is noise. Name sub-classes as the game speaks (`Ranged Weapon`, not `Weapon Type B`); the dash form `Weapon—Mounted` (an em dash, U+2014) is the catalog's convention for a sub-kind named after its parent. The stats a class declares are the columns the data step fills, so a stat line declared once on the base appears for every sub-class.
+
 ## What good rulebooks look like
 
 A few patterns that show up in every shipped rulebook:
 
+- **A templated taxonomy**: one base class per shared stat line, sub-classes where placement or rules differ (see "When to split a class, and when not to" above).
 - **One root point budget on the Roster** as a tracked numeric stat — items contribute via rank `tracking` dicts.
 - **Mutex** = a category class with `aspects.Unique: true`; only one item from that class per parent.
 - **Faction/army filters** = roster-level rank stat, with rules that add the chosen value to `constraints.any`.
@@ -300,6 +314,7 @@ The rule engine is intentionally simple. Don't try to:
 
 ## Where to look next
 
+- `RZ_DATA_FORMAT_PRINCIPLES.md` — the rules that are easy to get wrong: the root, sparseness, child lists, what the engine stamps
 - `RULE_PATTERNS.md` — concrete recipes for common needs
 - `PATH_SYNTAX.md` — exact spelling of `{self}`, `{parent}`, `{roster}`, `{this}`, eval-result references
 - `examples/landwar/` — full upstream-data-driven generator + validator
