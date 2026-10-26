@@ -20,6 +20,7 @@ The pieces aren't independent. Build them in this sequence:
 
 1. **`docs/RULEBOOK_AUTHORING.md`** — the missing manual, including canonical type definitions for stats, ranks, rules, evals, and actions.
 2. **`docs/RULE_PATTERNS.md`** — cookbook of common idioms (mutex via Unique, gating via constraints, SUM-tracked points). References the authoring doc.
+2b. **`docs/CAMPAIGN_TRACKING.md`** — campaign-style mini-games (counters, trackers, honour families, gates) and the engine facts they depend on, from the 40k 11e Crusade build.
 3. **`docs/PATH_SYNTAX.md`** — eval/action path syntax reference, including the full writable path table derived from the engine's path option tree.
 4. **`docs/BSDATA_INGESTION.md`** — BSData XML → Rosterizer concept map and notes for building a fresh ingestion tool. Includes `BS_schema.png` (BSData ER diagram, source unknown).
 4. **`examples/bugWars/`** — obfuscated 40k chain (core → faction → army → sub-army). Worked example for inheritance/dependency rulebooks.
