@@ -29,7 +29,7 @@ Once you have answers, produce a single `.rulebook` JSON file with:
 - One class per major asset type identified in Q7
 - Each class has: `aspects`, `stats` (with correct `statType`, `visibility`, and `tracked` where needed), `keywords` category declarations, `allowed.classifications`
 - The stat columns in the taxonomy define which columns will appear in Phase 2 CSVs — include every stat that will be needed for data entry, not just the ones needed for rules
-- Use `templateClass` inheritance where classes share a stat line (e.g. Infantry and Vehicle both extend a base Unit class)
+- Use `templateClass` inheritance where classes share a stat line (e.g. Infantry and Vehicle both extend a base Unit class), and split a class where entries of one kind differ in where they may be placed or which rules govern them — weapons by mount, perks a sponsor brings (the manual's "When to split a class, and when not to"). A difference of value alone is a keyword or a rank, not a class.
 - The `Roster` class IS the roster root (there is no `Roster§Roster` catalog item in the current format): it declares `allowed.classifications` for all top-level containers, a Points budget stat if the game uses one, any faction/allegiance rank stats, `aspects.Label` for what the game calls a roster, and a `text` field with a brief build-order guide. Do not author `Type`, `Visibility`, `Rename`, `Describe`, `Collapse`, `Lock Qty`, `Unique` or `Assetless` on it; the app stamps those.
 
 ### `assetCatalog`

@@ -193,7 +193,10 @@ A rulebook's shape is its taxonomy. Settle the classes before any
 catalog work:
 
 - One class per kind of thing a player adds or a rule reasons about.
-  Share a stat line through `templateClass` rather than repeating it.
+  Share a stat line through `templateClass` rather than repeating it,
+  and split a class where entries differ in placement or rules, not
+  where they differ only in a value (the manual's "When to split a
+  class, and when not to").
 - The class declares every stat its items will need, with `statType`,
   `visibility` and `tracked` where they apply; items fill values. A stat
   an item needs that its class lacks is a taxonomy change, not an item
