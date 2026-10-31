@@ -54,6 +54,15 @@ rz.run_all_rules(unit_rules, ctx={"self": unit})
 print(unit.stats)
 ```
 
+### `relink_readmes.py`
+
+Moves every README link in the data org from the retired `RosterizerTestData` org to `RosterizerData`, one commit per repo, through the GitHub CLI's login (which needs write access to the org's repos for `--apply`). Without `--apply` it only reports each link and whether the rewritten target exists; links mangled on purpose as dev notes answer 404 either way and are swapped all the same.
+
+```bash
+python3 tools/relink_readmes.py          # report
+python3 tools/relink_readmes.py --apply  # commit
+```
+
 ## Tools we need but haven't built
 
 ### `rz_lint.py`
