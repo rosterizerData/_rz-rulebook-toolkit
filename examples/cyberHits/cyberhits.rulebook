@@ -4,7 +4,7 @@
   "game": "cyberHits",
   "genre": "sci-fi",
   "publisher": "",
-  "url": "https://raw.githubusercontent.com/RosterizerTestData/rz-rulebook-toolkit/main/examples/cyberHits/cyberhits.rulebook",
+  "url": "https://raw.githubusercontent.com/RosterizerData/_rz-rulebook-toolkit/main/examples/cyberHits/cyberhits.rulebook",
   "notes": "Reskinned example rulebook for the rz-rulebook-toolkit. Mechanics derived from a real game; names and prose are fictional. Not for public use.",
   "wip": false,
   "rulebook": {

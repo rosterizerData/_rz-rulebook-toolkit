@@ -4,7 +4,7 @@
   "game": "bugWars",
   "genre": "sci-fi",
   "publisher": "",
-  "url": "https://raw.githubusercontent.com/RosterizerTestData/rz-rulebook-toolkit/main/examples/bugWars/mandible_legion.rulebook",
+  "url": "https://raw.githubusercontent.com/RosterizerData/_rz-rulebook-toolkit/main/examples/bugWars/mandible_legion.rulebook",
   "notes": "Reskinned example rulebook for the rz-rulebook-toolkit. Mechanics derived from a real game; names and prose are fictional. Not for public use.",
   "wip": false,
   "dependencies": [
@@ -12,7 +12,7 @@
       "slug": "BUG002",
       "name": "Formica Dominion",
       "game": "bugWars",
-      "source": "https://raw.githubusercontent.com/RosterizerTestData/rz-rulebook-toolkit/main/examples/bugWars/formica_dominion.rulebook"
+      "source": "https://raw.githubusercontent.com/RosterizerData/_rz-rulebook-toolkit/main/examples/bugWars/formica_dominion.rulebook"
     }
   ],
   "rulebook": {

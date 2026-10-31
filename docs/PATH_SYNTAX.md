@@ -155,7 +155,7 @@ Path-refs work in `equation.value` too:
 
 ## Reading shipped rulebooks
 
-If you need to confirm a path shape, the most reliable reference is a real rulebook. The 40k10e and Reign-in-Hell rulebooks (in `RosterizerTestData/`) and the v1 chess/fray fixtures (in `client/src/assets/fixtures/rulebooks/`) cover most patterns. Grep them for the segment you're unsure about.
+If you need to confirm a path shape, the most reliable reference is a real rulebook. The 40k10e and Reign-in-Hell rulebooks (in `RosterizerData/`) and the v1 chess/fray fixtures (in `client/src/assets/fixtures/rulebooks/`) cover most patterns. Grep them for the segment you're unsure about.
 
 ## What doesn't work
 

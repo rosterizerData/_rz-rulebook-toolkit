@@ -1,18 +1,18 @@
 # Rosterizer Rulebook Toolkit — Handoff
 
-Shared knowledge, patterns, and tooling for authoring Rosterizer rulebooks. Designed to live alongside the per-game rulebook repos in `RosterizerTestData/`.
+Shared knowledge, patterns, and tooling for authoring Rosterizer rulebooks. Designed to live alongside the per-game rulebook repos in `RosterizerData/`.
 
 ## Why this exists
 
 Three problems this toolkit aims to solve:
 
-1. **Half-finished rulebooks are stuck.** Existing rulebooks in `RosterizerTestData/` were authored with partial knowledge of the rulebook format. They need diagnostics and worked examples to push to completion.
+1. **Half-finished rulebooks are stuck.** Existing rulebooks in `RosterizerData/` were authored with partial knowledge of the rulebook format. They need diagnostics and worked examples to push to completion.
 2. **Domain expertise is leaving.** The main contributor for 40k is stepping away. Future maintainers (human or AI) need pattern references to extend or fix games they don't know intimately.
 3. **New games are slow to onboard.** Each new rulebook starts from scratch. A generator template + ingestion path for upstream data sources speeds this up.
 
 ## Status
 
-This is a **handoff package** intended to be moved into a dedicated `RosterizerTestData/rz-rulebook-toolkit` repo (or similar). The owning repo will handle IP obfuscation for the 40k example.
+This package lives in its own repo, `RosterizerData/_rz-rulebook-toolkit`, beside the per-game rulebook repos. The examples are already obfuscated; the naming map and reskin diff that would undo it stay out of the public repo.
 
 ## Build order
 
@@ -37,7 +37,7 @@ The pieces aren't independent. Build them in this sequence:
 
 - `docs/` — distilled authoring knowledge; `BSDATA_INGESTION.md` + `BS_schema.png` salvaged from the deleted `battlescribe-to-rosterizer` repo
 - `prompts/` — copy-paste prompts for each authoring phase
-- `tools/` — `rz_simulate.py` engine core; future linter/diff
+- `tools/` — `rz_simulate.py` engine core; `relink_readmes.py` moves the org's README links off the retired org; future linter/diff
 - `examples/bugWars/` — obfuscated 40k chain (core, faction, army, sub-army)
 - `examples/cyberHits/` — obfuscated Gaslands (flat single-file shape)
 
@@ -51,5 +51,5 @@ The authoring docs synthesize material scraped from:
 - `_reference/client/src/app/data/rule-recipes.ts` — rule examples that the Rule Wizard ships
 - `_reference/client/src/app/helpers/roster.process.ts` — `executeRule` and supporting code; authoritative behavior
 - `_reference/client/src/app/models/rule.model.ts` — type definitions
-- Shipped rulebooks: `RosterizerTestData/Warhammer40k10e/*.rulebook`, `RosterizerTestData/Gaslands/*.rulebook`, and `RosterizerTestData/Reign-in-Hell/*.rulebook`
+- Shipped rulebooks: `RosterizerData/Warhammer40k10e/*.rulebook`, `RosterizerData/Gaslands/*.rulebook`, and `RosterizerData/Reign-in-Hell/*.rulebook`
 - v1 fixtures at `client/src/assets/fixtures/rulebooks/{chess,chess-piecewise,fray}.input.json`
